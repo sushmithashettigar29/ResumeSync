@@ -7,6 +7,8 @@ import HomePage from "./components/HomePage";
 import NewResume from "./components/NewResume";
 import EnchanceResume from "./components/EnchanceResume";
 import Profile from "./components/Profile";
+import About from "./components/About";
+import CreateResume from "./components/CreateResume";
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
       <Route path="/new-resume" element={<NewResume />} />
       <Route path="/enhance-resume" element={<EnchanceResume />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/create-resume" element={<CreateResume />} />
     </Routes>
   );
 };

@@ -1,13 +1,12 @@
 import React from "react";
-import { Container, Typography } from "@mui/material";
+import NavBar from "./NavBar";
+
 function EnchanceResume() {
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Enhance Your Existing Resume
-      </Typography>
-      {/* Add your form or content for enhancing an existing resume here */}
-    </Container>
+    <>
+      <NavBar />
+      <h1>Enchance Resume is working!</h1>
+    </>
   );
 }
 
