@@ -1,0 +1,68 @@
+/* HomePage.css */
+
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 90vh;
+  padding: 20px;
+  background-color: #C7E4DA;
+}
+
+.home-page-content {
+  max-width: 800px;
+  width: 100%;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.primary-button,
+.secondary-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.primary-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+.secondary-button {
+  background-color: transparent;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+}
+
+.primary-button:hover {
+  background-color: #1565c0;
+}
+
+.secondary-button:hover {
+  background-color: #f0f0f0;
+}

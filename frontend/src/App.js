@@ -9,6 +9,9 @@ import EnchanceResume from "./components/EnchanceResume";
 import Profile from "./components/Profile";
 import About from "./components/About";
 import CreateResume from "./components/CreateResume";
+import "./App.css";
+import PersonalInformation from "./components/PersonalInformation";
+import Education from "./components/Education";
 
 const App = () => {
   return (
@@ -21,6 +24,8 @@ const App = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/about" element={<About />} />
       <Route path="/create-resume" element={<CreateResume />} />
+      <Route path="/personal-info" element={<PersonalInformation/>}/>
+      <Route path="/education" element={<Education/>}/>
     </Routes>
   );
 };

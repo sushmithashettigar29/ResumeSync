@@ -1,0 +1,114 @@
+/* General Container */
+.container {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Header */
+.header {
+  background-color: #6c63ff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.title {
+  margin: 0;
+}
+
+.change-template-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Content Layout */
+.content {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 25%;
+  background-color: #f8f8f8;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar-button {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sidebar-button.active {
+  border: 2px solid #6c63ff;
+  background-color: white;
+}
+
+/* Form Container */
+.form-container {
+  width: 75%;
+  padding: 30px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Rows and Inputs */
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.time-period {
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.next-button {
+  align-self: flex-end;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
