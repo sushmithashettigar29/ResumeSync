@@ -3,6 +3,7 @@
   font-family: Arial, sans-serif;
   color: #333;
 }
+
 /* Content Layout */
 .content {
   display: flex;
@@ -11,11 +12,12 @@
 /* Sidebar */
 .sidebar {
   width: 25%;
-  background-color: #f8f8f8;
+  background-color: #f3afaf;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  height: calc(100vh - 70px);
 }
 
 .sidebar-button {
@@ -55,31 +57,41 @@
   gap: 15px;
 }
 
-.input {
+.input,
+.textarea {
   flex: 1;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
 
-.time-period {
-  align-items: center;
+.textarea {
+  resize: none;
 }
 
-.checkbox-label {
+.description-row {
+  position: relative;
+}
+
+/* Text Tools */
+.text-tools {
+  position: absolute;
+  top: 5px;
+  right: 10px;
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
-.checkbox {
-  width: 16px;
-  height: 16px;
+.text-tool {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 /* Buttons */
-.next-button {
+.finish-button {
   align-self: flex-end;
   background-color: #6c63ff;
   color: white;

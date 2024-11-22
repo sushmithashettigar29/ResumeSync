@@ -1,13 +1,28 @@
 /* NavBar.css */
 
-.navbar {
+/* .navbar {
   background-color: #1976d2;
   color: white;
-  padding: 10px 20px;
+  padding: 0 auto;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 70px;
+} */
+.navbar {
+  background-color: #1976d2;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 70px;
+  padding: 0px 50px;
+
+  /* Center content */
+  line-height: 70px; /* Matches the navbar height */
+  text-align: center; /* Centers text horizontally */
 }
 
 .navbar-container {

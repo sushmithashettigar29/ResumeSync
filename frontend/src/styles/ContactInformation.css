@@ -3,6 +3,30 @@
   font-family: Arial, sans-serif;
   color: #333;
 }
+
+/* Header */
+.header {
+  background-color: #6c63ff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.title {
+  margin: 0;
+}
+
+.change-template-button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /* Content Layout */
 .content {
   display: flex;
@@ -62,20 +86,14 @@
   border: 1px solid #ddd;
 }
 
-.time-period {
-  align-items: center;
-}
-
-.checkbox-label {
+.phone-input {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
-.checkbox {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
+.phone-input .flag {
+  font-size: 24px;
+  margin-right: 10px;
 }
 
 /* Buttons */

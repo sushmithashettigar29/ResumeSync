@@ -1,18 +1,19 @@
 // import React, { useState } from "react";
-// import "../styles/Education.css";
+// import "../styles/Experience.css"; // Import the CSS file
 // import NavBar from "./NavBar";
 // import { useNavigate } from "react-router-dom";
 
-// const Education = () => {
+// const Experience = () => {
 //   const navigate = useNavigate();
 //   const [formData, setFormData] = useState({
-//     institution: "",
-//     course: "",
-//     country: "",
-//     state: "",
+//     employer: "",
+//     company: "",
+//     address: "",
+//     role: "",
 //     start: "",
 //     finish: "",
-//     currentlyStudying: false,
+//     currentlyWorking: false,
+//     description: "",
 //   });
 
 //   const handleChange = (e) => {
@@ -25,11 +26,10 @@
 
 //   const handleSubmit = (e) => {
 //     e.preventDefault();
-//     console.log("Form Data Submitted: ", formData);
+//     console.log("Experience Data Submitted: ", formData);
 //   };
-
-//   const navigateToExperience = ()=>{
-//     navigate("/experience");
+//   const navigateToContactInfo = ()=>{
+//     navigate("/contact-info");
 //   }
 //   return (
 //     <div className="container">
@@ -39,18 +39,18 @@
 //             <div className="row">
 //               <input
 //                 type="text"
-//                 name="institution"
-//                 placeholder="Name of school"
-//                 value={formData.institution}
+//                 name="employer"
+//                 placeholder="Employer's name"
+//                 value={formData.employer}
 //                 onChange={handleChange}
 //                 required
 //                 className="input"
 //               />
 //               <input
 //                 type="text"
-//                 name="course"
-//                 placeholder="Course studied"
-//                 value={formData.course}
+//                 name="company"
+//                 placeholder="Company name"
+//                 value={formData.company}
 //                 onChange={handleChange}
 //                 required
 //                 className="input"
@@ -59,18 +59,18 @@
 //             <div className="row">
 //               <input
 //                 type="text"
-//                 name="country"
-//                 placeholder="Country name"
-//                 value={formData.country}
+//                 name="address"
+//                 placeholder="Address"
+//                 value={formData.address}
 //                 onChange={handleChange}
 //                 required
 //                 className="input"
 //               />
 //               <input
 //                 type="text"
-//                 name="state"
-//                 placeholder="State"
-//                 value={formData.state}
+//                 name="role"
+//                 placeholder="Role"
+//                 value={formData.role}
 //                 onChange={handleChange}
 //                 required
 //                 className="input"
@@ -93,20 +93,44 @@
 //                 value={formData.finish}
 //                 onChange={handleChange}
 //                 className="input"
-//                 disabled={formData.currentlyStudying}
+//                 disabled={formData.currentlyWorking}
 //               />
 //               <label className="checkbox-label">
 //                 <input
 //                   type="checkbox"
-//                   name="currentlyStudying"
-//                   checked={formData.currentlyStudying}
+//                   name="currentlyWorking"
+//                   checked={formData.currentlyWorking}
 //                   onChange={handleChange}
 //                   className="checkbox"
 //                 />
-//                 Currently study here
+//                 Currently work here
 //               </label>
 //             </div>
-//             <button type="submit" className="next-button" onClick={navigateToExperience}>
+//             <div className="row description-row">
+//               <textarea
+//                 name="description"
+//                 placeholder="Describe your responsibilities..."
+//                 value={formData.description}
+//                 onChange={handleChange}
+//                 rows="5"
+//                 className="textarea"
+//               ></textarea>
+//               <div className="text-tools">
+//                 <button type="button" className="text-tool">
+//                   B
+//                 </button>
+//                 <button type="button" className="text-tool">
+//                   I
+//                 </button>
+//                 <button type="button" className="text-tool">
+//                   U
+//                 </button>
+//                 <button type="button" className="text-tool">
+//                   A
+//                 </button>
+//               </div>
+//             </div>
+//             <button type="submit" className="next-button" onClick={navigateToContactInfo}>
 //               Next Session
 //             </button>
 //           </form>
@@ -116,19 +140,21 @@
 //   );
 // };
 
-// export default Education;
-import React, { useState } from "react";
-import "../styles/Education.css";
+// export default Experience;
 
-const Education = ({ navigateToNext }) => {
+import React, { useState } from "react";
+import "../styles/Experience.css";
+
+const Experience = ({ navigateToNext }) => {
   const [formData, setFormData] = useState({
-    institution: "",
-    course: "",
-    country: "",
-    state: "",
+    employer: "",
+    company: "",
+    address: "",
+    role: "",
     start: "",
     finish: "",
-    currentlyStudying: false,
+    currentlyWorking: false,
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -136,27 +162,27 @@ const Education = ({ navigateToNext }) => {
     setFormData((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
-      ...(name === "currentlyStudying" && { finish: checked ? "" : prevState.finish }),
+      ...(name === "currentlyWorking" && { finish: checked ? "" : prevState.finish }),
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
+    // Validation
     if (!formData.start.match(/^(0[1-9]|1[0-2])\/\d{2}$/)) {
       alert("Invalid start date format. Please use MM/YY.");
       return;
     }
     if (
-      !formData.currentlyStudying &&
+      !formData.currentlyWorking &&
       !formData.finish.match(/^(0[1-9]|1[0-2])\/\d{2}$/)
     ) {
       alert("Invalid finish date format. Please use MM/YY.");
       return;
     }
 
-    console.log("Education Form Submitted: ", formData);
+    console.log("Experience Data Submitted: ", formData);
     navigateToNext(); // Navigate to the next section
   };
 
@@ -168,18 +194,18 @@ const Education = ({ navigateToNext }) => {
             <div className="row">
               <input
                 type="text"
-                name="institution"
-                placeholder="Name of school"
-                value={formData.institution}
+                name="employer"
+                placeholder="Employer's name"
+                value={formData.employer}
                 onChange={handleChange}
                 required
                 className="input"
               />
               <input
                 type="text"
-                name="course"
-                placeholder="Course studied"
-                value={formData.course}
+                name="company"
+                placeholder="Company name"
+                value={formData.company}
                 onChange={handleChange}
                 required
                 className="input"
@@ -188,18 +214,18 @@ const Education = ({ navigateToNext }) => {
             <div className="row">
               <input
                 type="text"
-                name="country"
-                placeholder="Country name"
-                value={formData.country}
+                name="address"
+                placeholder="Address"
+                value={formData.address}
                 onChange={handleChange}
                 required
                 className="input"
               />
               <input
                 type="text"
-                name="state"
-                placeholder="State"
-                value={formData.state}
+                name="role"
+                placeholder="Role"
+                value={formData.role}
                 onChange={handleChange}
                 required
                 className="input"
@@ -222,17 +248,17 @@ const Education = ({ navigateToNext }) => {
                 value={formData.finish}
                 onChange={handleChange}
                 className="input"
-                disabled={formData.currentlyStudying}
+                disabled={formData.currentlyWorking}
               />
               <label className="checkbox-label">
                 <input
                   type="checkbox"
-                  name="currentlyStudying"
-                  checked={formData.currentlyStudying}
+                  name="currentlyWorking"
+                  checked={formData.currentlyWorking}
                   onChange={handleChange}
                   className="checkbox"
                 />
-                Currently study here
+                Currently work here
               </label>
             </div>
             <button type="submit" className="next-button">
@@ -245,5 +271,5 @@ const Education = ({ navigateToNext }) => {
   );
 };
 
-export default Education;
+export default Experience;
 

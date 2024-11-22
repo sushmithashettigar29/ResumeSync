@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function CreateResume() {
   const navigate = useNavigate();
   const navigateToPersonalInfo = () => {
-    navigate("/personal-info");
+    navigate("/new-resume-details");
   };
   return (
     <>

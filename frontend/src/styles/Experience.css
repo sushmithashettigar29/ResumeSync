@@ -3,6 +3,7 @@
   font-family: Arial, sans-serif;
   color: #333;
 }
+
 /* Content Layout */
 .content {
   display: flex;
@@ -55,11 +56,16 @@
   gap: 15px;
 }
 
-.input {
+.input,
+.textarea {
   flex: 1;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
+}
+
+.textarea {
+  resize: none;
 }
 
 .time-period {
@@ -76,6 +82,27 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
+}
+
+/* Text Tools */
+.description-row {
+  position: relative;
+}
+
+.text-tools {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.text-tool {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 /* Buttons */

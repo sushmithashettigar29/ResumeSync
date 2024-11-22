@@ -12,6 +12,10 @@ import CreateResume from "./components/CreateResume";
 import "./App.css";
 import PersonalInformation from "./components/PersonalInformation";
 import Education from "./components/Education";
+import Experience from "./components/Experience";
+import ContactInformation from "./components/ContactInformation";
+import AwardCertification from "./components/AwardCertification";
+import NewResumeDetails from "./components/NewResumeDetails";
 
 const App = () => {
   return (
@@ -26,6 +30,10 @@ const App = () => {
       <Route path="/create-resume" element={<CreateResume />} />
       <Route path="/personal-info" element={<PersonalInformation/>}/>
       <Route path="/education" element={<Education/>}/>
+      <Route path="/experience" element={<Experience/>}/>
+      <Route path="/contact-info" element={<ContactInformation/>}/>
+      <Route path="/award-certi" element={<AwardCertification/>}/>
+      <Route path="/new-resume-details" element={<NewResumeDetails/>}/>
     </Routes>
   );
 };
