@@ -1,8 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../NavBar/NavBar";
 import styles from "./ProfilePage.module.css"; // Import the CSS Module
+import axios from "axios";  // Import axios to make HTTP requests
 
 const ProfilePage = () => {
+  const [isEditing, setIsEditing] = useState(false); // State for toggle between edit/view
+  const [newUsername, setNewUsername] = useState(localStorage.getItem("username"));
+  const [newEmail, setNewEmail] = useState(localStorage.getItem("email"));
+  const [newBio, setNewBio] = useState(localStorage.getItem("bio") || ""); 
+
+  const [error, setError] = useState(null);  // State for error handling
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");  // Get token from localStorage
+  
+      // Send updated profile data to backend
+      const response = await axios.put(
+        "http://localhost:5000/api/auth/profile",  // Update URL to match backend route
+        {
+          username: newUsername,
+          email: newEmail,
+          bio: newBio,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach the JWT token to the request
+          },
+        }
+      );
+  
+      localStorage.setItem("username", newUsername); // Update localStorage with the new username
+      localStorage.setItem("email", newEmail); // Update localStorage with the new email
+      localStorage.setItem("bio", newBio);
+      alert("Profile updated successfully!");
+      setIsEditing(false); // Exit edit mode
+    } catch (err) {
+      setError("Failed to update profile. Please try again.");
+      console.error(err);
+    }
+  };
+  
+
   return (
     <>
       <NavBar />
@@ -14,7 +57,7 @@ const ProfilePage = () => {
               alt="User"
               className={styles["profile-avatar"]}
             />
-            <h1 className={styles["profile-name"]}>John Doe</h1>
+            <h1 className={styles["profile-name"]}>{newUsername}</h1>
             <p className={styles["profile-title"]}>
               Software Engineer | React Developer | AI Enthusiast
             </p>
@@ -26,9 +69,9 @@ const ProfilePage = () => {
               <input
                 type="text"
                 id="fullName"
-                value="John Doe"
-                disabled
-                readOnly
+                value={newUsername}
+                disabled={!isEditing}
+                onChange={(e) => setNewUsername(e.target.value)}
                 className={styles["input"]}
               />
             </div>
@@ -37,9 +80,9 @@ const ProfilePage = () => {
               <input
                 type="email"
                 id="email"
-                value="johndoe@example.com"
-                disabled
-                readOnly
+                value={newEmail} // Display email here
+                disabled={!isEditing}
+                onChange={(e) => setNewEmail(e.target.value)} // Allow changes if in edit mode
                 className={styles["input"]}
               />
             </div>
@@ -48,17 +91,27 @@ const ProfilePage = () => {
               <textarea
                 id="bio"
                 rows="4"
-                value="I am a passionate developer with experience in ReactJS and AI technologies. I love coding, learning new things, and solving real-world problems."
-                disabled
-                readOnly
+                value={newBio}
+                disabled={!isEditing}
+                onChange={(e) => setNewBio(e.target.value)}
                 className={styles["input"]}
               />
             </div>
           </div>
 
           <div className={styles["profile-actions"]}>
-            <button className={styles["edit-button"]}>Edit Profile</button>
+            {isEditing ? (
+              <button className={styles["save-button"]} onClick={handleSave}>
+                Save Changes
+              </button>
+            ) : (
+              <button className={styles["edit-button"]} onClick={handleEditToggle}>
+                Edit Profile
+              </button>
+            )}
           </div>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}  {/* Display error message */}
         </div>
       </div>
     </>

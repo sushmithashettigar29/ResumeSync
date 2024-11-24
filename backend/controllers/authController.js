@@ -43,9 +43,36 @@ exports.login = async (req, res) => {
 
     res.json({
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, bio: user.bio }, // Include bio in the response
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id; // User ID from JWT token
+    const { username, email, bio } = req.body; // Include bio in the request body
+
+    // Find the user by ID and update their details
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name: username, email: email, bio: bio }, // Update bio along with name and email
+      { new: true } // Return the updated user document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+

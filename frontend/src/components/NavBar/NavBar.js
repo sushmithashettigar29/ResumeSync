@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 function NavBar() {
-  const [auth, setAuth] = useState(true);
+  const [auth, setAuth] = useState(true); // Assume user is authenticated
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [username, setUsername] = useState(""); // For storing the logged-in username
   const navigate = useNavigate();
+
+  // Retrieve username from localStorage when the component loads
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      setAuth(false); // If no username found, set auth to false
+    }
+  }, []);
 
   const handleLogout = () => {
     setAuth(false);
+    localStorage.removeItem("username"); // Remove username from localStorage
+    localStorage.removeItem("token"); // Remove token as well
     navigate("/");
   };
 
@@ -48,7 +61,7 @@ function NavBar() {
           {auth && (
             <>
               <span className={styles.navbarLink} onClick={handleProfile}>
-                Profile
+                {username} {/* Display the logged-in username */}
               </span>
               <span className={styles.navbarLink} onClick={handleLogout}>
                 Logout
