@@ -1,0 +1,51 @@
+/* AwardCertification.module.css */
+.container {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.content {
+  display: flex;
+}
+
+.form-container {
+  width: 75%;
+  padding: 30px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.input,
+.textarea {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.textarea {
+  resize: none;
+}
+
+.finish-button {
+  align-self: flex-end;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,0 +1,66 @@
+.homePageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 90vh;
+  padding: 20px;
+  background-color: #c7e4da;
+}
+
+.homePageContent {
+  max-width: 800px;
+  width: 100%;
+  padding: 10px;
+}
+
+.heading {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.paragraph {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+
+.subHeading {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.primaryButton {
+  background-color: #1976d2;
+  color: white;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+}
+
+.primaryButton:hover {
+  background-color: #1565c0;
+}
+
+.secondaryButton:hover {
+  background-color: #f0f0f0;
+}

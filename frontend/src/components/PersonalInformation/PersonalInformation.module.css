@@ -1,0 +1,48 @@
+.container {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.content {
+  display: flex;
+}
+
+/* Form Container */
+.form-container {
+  width: 75%;
+  padding: 30px;
+}
+
+.form-title {
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Rows and Inputs */
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+/* Buttons */
+.next-button {
+  align-self: flex-end;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -1,0 +1,65 @@
+/* Container */
+.container {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Layout */
+.content {
+  display: flex;
+}
+
+.form-container {
+  width: 100%;
+  padding: 30px;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.time-period {
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Button */
+.next-button {
+  align-self: flex-end;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.next-button:hover {
+  background-color: #4f4acf;
+}
