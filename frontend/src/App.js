@@ -12,10 +12,14 @@ import CreateResume from "./components/CreateResume/CreateResume";
 import "./App.css";
 import PersonalInformation from "./components/PersonalInformation/PersonalInformation";
 import Education from "./components/Education/Education";
-import Experience from "./components/Experience/Experience";
-import ContactInformation from "./components/ContactInformation/ContactInformation";
-import AwardCertification from "./components/AwardCertification/AwardCertification";
 import NewResumeDetails from "./components/NewResumeDetails/NewResumeDetails";
+import Summary from "./components/Summary/Summary";
+import Skills from "./components/Skills/Skills";
+import Courses from "./components/Courses/Courses";
+import Internship from "./components/Internship/Internship";
+import ActivitiesParticipation from "./components/ActivitiesParticipation/ActivitiesParticipation";
+import Project from "./components/Project/Project";
+import Hobbies from "./components/Hobbies/Hobbies";
 
 const App = () => {
   return (
@@ -29,10 +33,14 @@ const App = () => {
       <Route path="/about" element={<About />} />
       <Route path="/create-resume" element={<CreateResume />} />
       <Route path="/personal-info" element={<PersonalInformation />} />
+      <Route path="/summary" element={<Summary />} />
       <Route path="/education" element={<Education />} />
-      <Route path="/experience" element={<Experience />} />
-      <Route path="/contact-info" element={<ContactInformation />} />
-      <Route path="/award-certi" element={<AwardCertification />} />
+      <Route path="/skills" element={<Skills />} />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/internship" element={<Internship />} />
+      <Route path="/activities-participation" element={<ActivitiesParticipation />} />
+      <Route path="/project" element={<Project />} />
+      <Route path="/hobbies" element={<Hobbies />} />
       <Route path="/new-resume-details" element={<NewResumeDetails />} />
     </Routes>
   );

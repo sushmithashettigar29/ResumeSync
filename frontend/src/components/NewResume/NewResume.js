@@ -1,8 +1,7 @@
 import React from "react";
 import NavBar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
-import styles from "./NewResume.module.css"; // Import CSS Module for scoped styles
-
+import styles from "./NewResume.module.css"; 
 function NewResume() {
   const navigate = useNavigate();
 

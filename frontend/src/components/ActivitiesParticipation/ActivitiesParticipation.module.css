@@ -1,0 +1,89 @@
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.formContainer {
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.activityList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.activityItem {
+  margin-bottom: 20px;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.input,
+.textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.addButton {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.addButton:hover {
+  background-color: #218838;
+}
+
+.submitButton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+hr {
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}

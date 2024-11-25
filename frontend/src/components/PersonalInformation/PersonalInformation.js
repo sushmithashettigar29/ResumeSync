@@ -1,23 +1,34 @@
-import React, { useState } from "react";
-import styles from "./PersonalInformation.module.css"; // Import the CSS Module
+import React,  { useState, useEffect }  from "react";
+import styles from "./PersonalInformation.module.css";
 
 const PersonalInformation = ({ navigateToNext }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    profession: "",
     address: "",
-    city: "",
-    state: "",
-    zipCode: "",
+    mobileNumber: "",
+    email: "",
+    LinkedIn: "",
+    GitHub: "",
+    Portfolio: "",
   });
 
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("personalInformation");
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    const updatedData = { ...formData, [name]: value };
+    setFormData(updatedData);
+
+    // Save to localStorage
+    localStorage.setItem("personalInformation", JSON.stringify(updatedData));
   };
 
   const handleSubmit = (e) => {
@@ -54,18 +65,18 @@ const PersonalInformation = ({ navigateToNext }) => {
             <div className={styles.row}>
               <input
                 type="text"
-                name="profession"
-                placeholder="e.g. Software Engineer"
-                value={formData.profession}
+                name="address"
+                placeholder="Enter Home Address in short"
+                value={formData.address}
                 onChange={handleChange}
                 required
                 className={styles.input}
               />
               <input
-                type="text"
-                name="address"
-                placeholder="Address"
-                value={formData.address}
+                type="number"
+                name="mobileNumber"
+                placeholder="Mobile Number"
+                value={formData.mobileNumber}
                 onChange={handleChange}
                 required
                 className={styles.input}
@@ -73,35 +84,43 @@ const PersonalInformation = ({ navigateToNext }) => {
             </div>
             <div className={styles.row}>
               <input
-                type="text"
-                name="city"
-                placeholder="City"
-                value={formData.city}
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                value={formData.email}
                 onChange={handleChange}
                 required
                 className={styles.input}
               />
               <input
                 type="text"
-                name="state"
-                placeholder="State"
-                value={formData.state}
+                name="LinkedIn"
+                placeholder="LinkedIn Profile Link"
+                value={formData.LinkedIn}
                 onChange={handleChange}
                 required
                 className={styles.input}
               />
               <input
                 type="text"
-                name="zipCode"
-                placeholder="Zip Code"
-                value={formData.zipCode}
+                name="GitHub"
+                placeholder="GitHub Profile Link"
+                value={formData.GitHub}
                 onChange={handleChange}
                 required
+                className={styles.input}
+              />
+              <input
+                type="text"
+                name="Portfolio"
+                placeholder="Portfolio Link"
+                value={formData.Portfolio}
+                onChange={handleChange}
                 className={styles.input}
               />
             </div>
             <button type="submit" className={styles["next-button"]}>
-              Next Session
+              Next
             </button>
           </form>
         </div>
