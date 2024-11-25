@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.css"; // Import the CSS Module
+import { register } from "../../services/authService";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -17,12 +18,16 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const response = await register(formData); // Call the register API
+      console.log("Server response:", response);
       alert("Registration successful");
-      navigate("/home");
+      navigate("/"); // Navigate to login after successful registration
     } catch (error) {
+      console.error("Error during registration:", error);
       alert("Registration failed");
     }
   };
+  
 
   return (
     <div className={styles["register-container"]}>

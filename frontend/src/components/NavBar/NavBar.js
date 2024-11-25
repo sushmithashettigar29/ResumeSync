@@ -6,13 +6,16 @@ function NavBar() {
   const [auth, setAuth] = useState(true); // Assume user is authenticated
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [username, setUsername] = useState(""); // For storing the logged-in username
+  const [profilePhoto, setProfilePhoto] = useState(""); // For storing profile photo URL
   const navigate = useNavigate();
 
-  // Retrieve username from localStorage when the component loads
+  // Retrieve username and profile photo from localStorage when the component loads
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
+    const storedProfilePhoto = localStorage.getItem("profilePhoto");
     if (storedUsername) {
       setUsername(storedUsername);
+      setProfilePhoto(storedProfilePhoto);
     } else {
       setAuth(false); // If no username found, set auth to false
     }
@@ -20,8 +23,11 @@ function NavBar() {
 
   const handleLogout = () => {
     setAuth(false);
-    localStorage.removeItem("username"); // Remove username from localStorage
-    localStorage.removeItem("token"); // Remove token as well
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    localStorage.removeItem("bio");
+    localStorage.removeItem("profilePhoto"); // Clear photo on logout
+    localStorage.removeItem("token");
     navigate("/");
   };
 
@@ -60,9 +66,17 @@ function NavBar() {
           ))}
           {auth && (
             <>
-              <span className={styles.navbarLink} onClick={handleProfile}>
-                {username} {/* Display the logged-in username */}
-              </span>
+              <div className={styles.profileContainer}>
+                <img
+                  src={
+                    profilePhoto || "https://via.placeholder.com/50" // Placeholder for no profile photo
+                  }
+                  alt="Profile"
+                  className={styles.profilePhoto}
+                  onClick={handleProfile} // Navigate to Profile Page on click
+                />
+                <span className={styles.navbarLink}>{username}</span>
+              </div>
               <span className={styles.navbarLink} onClick={handleLogout}>
                 Logout
               </span>

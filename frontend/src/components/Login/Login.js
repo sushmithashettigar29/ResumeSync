@@ -15,19 +15,21 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData.email, formData.password);
-
-      // Store user details including bio in localStorage
+  
+      // Store user details including profile photo in localStorage
       localStorage.setItem("username", response.data.user.name);
       localStorage.setItem("email", response.data.user.email);
-      localStorage.setItem("bio", response.data.user.bio); // Store bio
+      localStorage.setItem("bio", response.data.user.bio || ""); // Default to blank bio
+      localStorage.setItem("profilePhoto", response.data.user.profilePhoto || ""); // Default to blank photo
       localStorage.setItem("token", response.data.token);
-
+  
       alert("Login successful");
       navigate("/home");
     } catch (error) {
       alert("Login failed");
     }
   };
+  
 
   return (
     <div className={styles.loginContainer}>

@@ -1,22 +1,23 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-const protect = (req, res, next) => {
-  // Check for token in Authorization header
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1]; // "Bearer token"
+exports.protect = async (req, res, next) => {
+  let token;
 
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+      console.error("Error in protect middleware:", error);
+      res.status(401).json({ message: "Not authorized, token failed" });
+    }
   }
 
-  try {
-    // Verify the token using the JWT_SECRET (it must match the one used to sign the token)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach the user data (id) to the request object
-    next(); // Continue to the next middleware or route handler
-  } catch (err) {
-    return res.status(401).json({ message: "Token is not valid" });
+  if (!token) {
+    res.status(401).json({ message: "Not authorized, no token" });
   }
 };
 
-module.exports = { protect };

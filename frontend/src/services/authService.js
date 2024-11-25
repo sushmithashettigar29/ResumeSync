@@ -1,12 +1,26 @@
 // src/services/authService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth";
-
-export const register = (name, email, password) => {
-  return axios.post(`${API_URL}/register`, { name, email, password });
+// Register user
+export const register = async (formData) => {
+  const response = await axios.post("http://localhost:5000/api/auth/register", formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
 };
 
-export const login = (email, password) => {
-  return axios.post(`${API_URL}/login`, { email, password });
+// Login user
+export const login = async (email, password) => {
+  try {
+    const response = await axios.post("http://localhost:5000/api/auth/login", {
+      email,
+      password,
+    });
+    return response; // Return the response from the API
+  } catch (error) {
+    console.error("Login Error:", error);
+    throw error; // Throw the error to be handled in the component
+  }
 };
