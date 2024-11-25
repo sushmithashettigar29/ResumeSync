@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
 
 function NavBar() {
-  const [auth, setAuth] = useState(true); // Assume user is authenticated
+  const [auth, setAuth] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [username, setUsername] = useState(""); // For storing the logged-in username
-  const [profilePhoto, setProfilePhoto] = useState(""); // For storing profile photo URL
+  const [username, setUsername] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState("");
   const navigate = useNavigate();
 
-  // Retrieve username and profile photo from localStorage when the component loads
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     const storedProfilePhoto = localStorage.getItem("profilePhoto");
@@ -17,23 +16,17 @@ function NavBar() {
       setUsername(storedUsername);
       setProfilePhoto(storedProfilePhoto);
     } else {
-      setAuth(false); // If no username found, set auth to false
+      setAuth(false);
     }
   }, []);
 
   const handleLogout = () => {
     setAuth(false);
-    localStorage.removeItem("username");
-    localStorage.removeItem("email");
-    localStorage.removeItem("bio");
-    localStorage.removeItem("profilePhoto"); // Clear photo on logout
-    localStorage.removeItem("token");
+    localStorage.clear();
     navigate("/");
   };
 
-  const handleProfile = () => {
-    navigate("/profile");
-  };
+  const handleProfile = () => navigate("/profile");
 
   const navigateTo = (path) => {
     navigate(path);
@@ -68,12 +61,10 @@ function NavBar() {
             <>
               <div className={styles.profileContainer}>
                 <img
-                  src={
-                    profilePhoto || "https://via.placeholder.com/50" // Placeholder for no profile photo
-                  }
+                  src={profilePhoto || "https://via.placeholder.com/50"}
                   alt="Profile"
                   className={styles.profilePhoto}
-                  onClick={handleProfile} // Navigate to Profile Page on click
+                  onClick={handleProfile}
                 />
                 <span className={styles.navbarLink}>{username}</span>
               </div>
