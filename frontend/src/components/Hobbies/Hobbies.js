@@ -1,86 +1,102 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Hobbies.module.css";
 
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
+
 const Hobbies = ({ navigateToNext }) => {
-  // Single state object to manage form data
   const [formData, setFormData] = useState({
-    hobbies: [""], // Initialize hobbies as an array
+    hobbies: [""],
   });
 
-  // Load data from localStorage on component mount
+  // Load saved hobbies data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("formData");
+    const savedData = localStorage.getItem("hobbiesData");
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
   }, []);
 
-  // Save to localStorage whenever formData changes
-  useEffect(() => {
-    localStorage.setItem("formData", JSON.stringify(formData));
-  }, [formData]);
+  // Debounced save function for hobbies data
+  const saveToLocalStorage = debounce((updatedData) => {
+    localStorage.setItem("hobbiesData", JSON.stringify(updatedData));
+  }, 300);
 
-  // Handle changes in hobbies
+  // Handle hobby input changes for a specific index
   const handleHobbyChange = (index, value) => {
     const updatedHobbies = [...formData.hobbies];
     updatedHobbies[index] = value;
 
-    setFormData((prev) => ({
-      ...prev,
-      hobbies: updatedHobbies,
-    }));
+    setFormData((prev) => {
+      const updatedForm = { ...prev, hobbies: updatedHobbies };
+      saveToLocalStorage(updatedForm); // Debounced save
+      return updatedForm;
+    });
   };
 
-  // Add a new hobby input
+  // Add a new empty hobby input
   const addHobby = () => {
-    setFormData((prev) => ({
-      ...prev,
-      hobbies: [...prev.hobbies, ""],
-    }));
+    setFormData((prev) => {
+      const updatedForm = { ...prev, hobbies: [...prev.hobbies, ""] };
+      saveToLocalStorage(updatedForm); // Debounced save
+      return updatedForm;
+    });
   };
 
+  // Simple validation for hobby fields
+  const validate = () => {
+    const hobbiesFilled = formData.hobbies.filter((hobby) => hobby.trim() !== "");
+    if (hobbiesFilled.length === 0) {
+      alert("Please add at least one hobby.");
+      return false;
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted: ", formData);
-
-    // Clear all data from localStorage
-    localStorage.clear();
-
-    // Navigate to the next page
-    navigateToNext();
+    if (validate()) {
+      console.log("Hobbies Submitted: ", formData);
+      //localStorage.clear(); // Clear localStorage on submit
+      navigateToNext();
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.formContainer}>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <ul className={styles.hobbiesList}>
-              {formData.hobbies.map((hobby, index) => (
-                <li key={index} className={styles.hobbyItem}>
-                  <input
-                    type="text"
-                    placeholder={`Hobby ${index + 1}`}
-                    value={hobby}
-                    onChange={(e) => handleHobbyChange(index, e.target.value)}
-                    className={styles.input}
-                  />
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              className={styles.addButton}
-              onClick={addHobby}
-            >
-              + Add More Hobby
-            </button>
-
-            <button type="submit" className={styles.submitButton}>
-              Next
-            </button>
-          </form>
-        </div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <ul className={styles.hobbiesList}>
+            {formData.hobbies.map((hobby, index) => (
+              <li key={index} className={styles.hobbyItem}>
+                <input
+                  type="text"
+                  placeholder={`Hobby ${index + 1}`}
+                  value={hobby}
+                  onChange={(e) => handleHobbyChange(index, e.target.value)}
+                  className={styles.input}
+                />
+              </li>
+            ))}
+          </ul>
+          <button
+            type="button"
+            className={styles.addButton}
+            onClick={addHobby}
+          >
+            + Add More Hobby
+          </button>
+          <button type="submit" className={styles.submitButton}>
+            Next
+          </button>
+        </form>
       </div>
     </div>
   );

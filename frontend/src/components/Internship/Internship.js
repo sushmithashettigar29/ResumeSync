@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Internship.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const Internship = ({ navigateToNext }) => {
   const [internships, setInternships] = useState([
     { role: "", startMonth: "", endMonth: "", description: "" },
   ]);
 
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("internshipsData");
+    if (savedData) {
+      setInternships(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Debounced save function for internships data
+  const saveToLocalStorage = debounce((updatedInternships) => {
+    localStorage.setItem("internshipsData", JSON.stringify(updatedInternships));
+  }, 300);
+
+  // Handle input changes for internships
   const handleChange = (index, field, value) => {
     const updatedInternships = [...internships];
     updatedInternships[index][field] = value;
     setInternships(updatedInternships);
+    saveToLocalStorage(updatedInternships);
   };
 
+  // Add a new internship
   const addInternship = () => {
     setInternships([
       ...internships,
@@ -19,10 +44,25 @@ const Internship = ({ navigateToNext }) => {
     ]);
   };
 
+  // Simple validation for internship fields
+  const validate = () => {
+    for (let i = 0; i < internships.length; i++) {
+      const { role, startMonth, endMonth, description } = internships[i];
+      if (!role || !startMonth || !endMonth || !description) {
+        alert("All fields are required for each internship.");
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Internships Form Submitted: ", internships);
-    navigateToNext();
+    if (validate()) {
+      console.log("Internships Form Submitted: ", internships);
+      navigateToNext();
+    }
   };
 
   return (

@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ActivitiesParticipation.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const ActivitiesParticipation = ({ navigateToNext }) => {
   const [activities, setActivities] = useState([
     { eventName: "", role: "", duration: "", description: "" },
   ]);
 
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("activities");
+    if (savedData) {
+      setActivities(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Debounced save function for activities
+  const saveToLocalStorage = debounce((updatedActivities) => {
+    localStorage.setItem("activities", JSON.stringify(updatedActivities));
+  }, 300);
+
+  // Handle input changes for activities
   const handleChange = (index, field, value) => {
     const updatedActivities = [...activities];
     updatedActivities[index][field] = value;
     setActivities(updatedActivities);
+    saveToLocalStorage(updatedActivities);
   };
 
+  // Add a new activity
   const addActivity = () => {
     setActivities([
       ...activities,
@@ -19,10 +44,25 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
     ]);
   };
 
+  // Simple validation for activity fields
+  const validate = () => {
+    for (let i = 0; i < activities.length; i++) {
+      const { eventName, role, duration, description } = activities[i];
+      if (!eventName || !role || !duration || !description) {
+        alert("All fields are required for each activity.");
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Activities Form Submitted: ", activities);
-    navigateToNext();
+    if (validate()) {
+      console.log("Activities Form Submitted: ", activities);
+      navigateToNext();
+    }
   };
 
   return (

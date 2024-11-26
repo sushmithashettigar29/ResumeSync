@@ -1,5 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Skills.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const Skills = ({ navigateToNext }) => {
   const [selectedSkills, setSelectedSkills] = useState({
@@ -34,23 +43,53 @@ const Skills = ({ navigateToNext }) => {
     otherSkills: ["Machine Learning", "Blockchain", "IoT", "Game Development"],
   };
 
+  // Debounced save function for skills data
+  const saveToLocalStorage = debounce((updatedData) => {
+    localStorage.setItem("skillsData", JSON.stringify(updatedData));
+  }, 300);
+
+  // Handle skill selection toggle
   const handleSkillChange = (section, skill) => {
     setSelectedSkills((prevState) => {
       const updatedSectionSkills = prevState[section].includes(skill)
         ? prevState[section].filter((s) => s !== skill) // Remove if already selected
         : [...prevState[section], skill]; // Add if not selected
 
-      return {
+      const updatedState = {
         ...prevState,
         [section]: updatedSectionSkills,
       };
+      saveToLocalStorage(updatedState); // Debounced save
+      return updatedState;
     });
   };
 
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("skillsData");
+    if (savedData) {
+      setSelectedSkills(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Simple validation to ensure at least one skill is selected per section
+  const validate = () => {
+    for (let section in selectedSkills) {
+      if (selectedSkills[section].length === 0) {
+        alert(`Please select at least one skill from the ${section} section.`);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Skills Form Submitted: ", selectedSkills);
-    navigateToNext();
+    if (validate()) {
+      console.log("Skills Form Submitted: ", selectedSkills);
+      navigateToNext();
+    }
   };
 
   return (

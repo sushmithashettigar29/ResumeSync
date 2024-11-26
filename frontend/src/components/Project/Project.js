@@ -1,17 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Project.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const Project = ({ navigateToNext }) => {
   const [projects, setProjects] = useState([
     { title: "", startMonth: "", endMonth: "", description: "" },
   ]);
 
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("projects");
+    if (savedData) {
+      setProjects(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Debounced save function for projects
+  const saveToLocalStorage = debounce((updatedProjects) => {
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+  }, 300);
+
+  // Handle input changes for projects
   const handleChange = (index, field, value) => {
     const updatedProjects = [...projects];
     updatedProjects[index][field] = value;
     setProjects(updatedProjects);
+    saveToLocalStorage(updatedProjects);
   };
 
+  // Add a new project
   const addProject = () => {
     setProjects([
       ...projects,
@@ -19,10 +44,29 @@ const Project = ({ navigateToNext }) => {
     ]);
   };
 
+  // Simple validation for project fields
+  const validate = () => {
+    for (let i = 0; i < projects.length; i++) {
+      const { title, startMonth, endMonth, description } = projects[i];
+      if (!title || !startMonth || !endMonth || !description) {
+        alert("All fields are required for each project.");
+        return false;
+      }
+      if (!/^[a-zA-Z]+ \d{4}$/.test(startMonth) || !/^[a-zA-Z]+ \d{4}$/.test(endMonth)) {
+        alert("Please enter valid month-year format (e.g., January 2022).");
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Projects Form Submitted: ", projects);
-    navigateToNext();
+    if (validate()) {
+      console.log("Projects Form Submitted: ", projects);
+      navigateToNext();
+    }
   };
 
   return (
@@ -39,9 +83,7 @@ const Project = ({ navigateToNext }) => {
                       type="text"
                       placeholder="Project Title"
                       value={project.title}
-                      onChange={(e) =>
-                        handleChange(index, "title", e.target.value)
-                      }
+                      onChange={(e) => handleChange(index, "title", e.target.value)}
                       required
                       className={styles.input}
                     />
@@ -49,9 +91,7 @@ const Project = ({ navigateToNext }) => {
                       type="text"
                       placeholder="Start Month (e.g. January 2022)"
                       value={project.startMonth}
-                      onChange={(e) =>
-                        handleChange(index, "startMonth", e.target.value)
-                      }
+                      onChange={(e) => handleChange(index, "startMonth", e.target.value)}
                       required
                       className={styles.input}
                     />
@@ -61,18 +101,14 @@ const Project = ({ navigateToNext }) => {
                       type="text"
                       placeholder="End Month (e.g. December 2022)"
                       value={project.endMonth}
-                      onChange={(e) =>
-                        handleChange(index, "endMonth", e.target.value)
-                      }
+                      onChange={(e) => handleChange(index, "endMonth", e.target.value)}
                       required
                       className={styles.input}
                     />
                     <textarea
                       placeholder="Description"
                       value={project.description}
-                      onChange={(e) =>
-                        handleChange(index, "description", e.target.value)
-                      }
+                      onChange={(e) => handleChange(index, "description", e.target.value)}
                       required
                       className={styles.textarea}
                     />

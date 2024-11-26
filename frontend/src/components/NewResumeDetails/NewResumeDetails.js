@@ -21,7 +21,8 @@ const components = {
   Internship,
   ActivitiesParticipation,
   Project,
-  Hobbies
+  Hobbies,
+  JobDescriptionUpload
 };
 
 function NewResumeDetails() {
@@ -35,6 +36,7 @@ function NewResumeDetails() {
     { id: 7, name: "Activities / Participation", component: "ActivitiesParticipation" },
     { id: 8, name: "Project", component: "Project" },
     { id: 9, name: "Hobbies", component: "Hobbies" },
+    { id: 10, name: "Job Description", component: "JobDescriptionUpload" },
   ];
 
   const [selectedSection, setSelectedSection] = useState(sections[0]);

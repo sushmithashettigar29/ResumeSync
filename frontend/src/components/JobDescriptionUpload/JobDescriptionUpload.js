@@ -1,5 +1,14 @@
-import React, { useState } from "react";
-import styles from "./JobDescriptionUpload.module.css"; // Import scoped CSS
+import React, { useState, useEffect } from "react";
+import styles from "./JobDescriptionUpload.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const JobDescriptionUpload = ({ navigateToNext }) => {
   const [formData, setFormData] = useState({
@@ -8,34 +17,62 @@ const JobDescriptionUpload = ({ navigateToNext }) => {
     file: null,
   });
 
+  // Debounced save function for form data
+  const saveToLocalStorage = debounce((updatedData) => {
+    localStorage.setItem("jobDescriptionData", JSON.stringify(updatedData));
+  }, 300);
+
+  // Handle input changes for text and file
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
+
     if (type === "file") {
-      setFormData((prevState) => ({
-        ...prevState,
-        file: files[0], // Store the selected file
-      }));
+      setFormData((prevState) => {
+        const updatedState = {
+          ...prevState,
+          file: files[0], // Store the selected file
+        };
+        saveToLocalStorage(updatedState); // Debounced save
+        return updatedState;
+      });
     } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
+      setFormData((prevState) => {
+        const updatedState = {
+          ...prevState,
+          [name]: value,
+        };
+        saveToLocalStorage(updatedState); // Debounced save
+        return updatedState;
+      });
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("jobDescriptionData");
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
 
-    // Basic validation
+  // Simple validation for job description and file
+  const validate = () => {
     if (!formData.jobTitle || (!formData.jobDescription && !formData.file)) {
       alert(
         "Please fill out the job title and either job description or upload a file."
       );
-      return;
+      return false;
     }
+    return true;
+  };
 
-    console.log("Job Description Data Submitted: ", formData);
-    navigateToNext(); // Navigate to the next section
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      console.log("Job Description Data Submitted: ", formData);
+      navigateToNext(); // Navigate to the next section
+    }
   };
 
   return (

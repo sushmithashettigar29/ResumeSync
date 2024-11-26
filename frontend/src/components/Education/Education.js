@@ -1,5 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Education.module.css";
+
+// Debounce function to optimize localStorage updates
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+};
 
 const Education = ({ navigateToNext }) => {
   const [formData, setFormData] = useState({
@@ -11,31 +20,52 @@ const Education = ({ navigateToNext }) => {
     currentlyStudying: false,
   });
 
+  // Debounced save function for education data
+  const saveToLocalStorage = debounce((updatedData) => {
+    localStorage.setItem("educationData", JSON.stringify(updatedData));
+  }, 300);
+
+  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: type === "checkbox" ? checked : value,
-      ...(name === "currentlyStudying" && {
-        endingYear: checked ? "" : prevState.endingYear,
-      }),
-    }));
+    setFormData((prevState) => {
+      const updatedState = {
+        ...prevState,
+        [name]: type === "checkbox" ? checked : value,
+        ...(name === "currentlyStudying" && {
+          endingYear: checked ? "" : prevState.endingYear,
+        }),
+      };
+      saveToLocalStorage(updatedState); // Debounced save
+      return updatedState;
+    });
   };
+
+  // Load saved data from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("educationData");
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []);
+
+  // Simple validation to check required fields
+  const validate = () => {
+    if (!formData.startingYear || !formData.endingYear || !formData.percentageOrCGPA) {
+      alert("All fields are required.");
+      return false;
+    }
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (
-      !formData.startingYear ||
-      !formData.endingYear ||
-      !formData.percentageOrCGPA
-    ) {
-      alert("All fields are required.");
-      return;
+    if (validate()) {
+      console.log("Education Form Submitted: ", formData);
+      navigateToNext();
     }
-
-    console.log("Education Form Submitted: ", formData);
-    navigateToNext();
   };
 
   return (
