@@ -3,7 +3,7 @@ import NavBar from "../NavBar/NavBar";
 import PersonalInformation from "../PersonalInformation/PersonalInformation";
 import Education from "../Education/Education";
 import JobDescriptionUpload from "../JobDescriptionUpload/JobDescriptionUpload";
-import styles from "./NewResumeDetails.module.css"; // Import the CSS Module
+import styles from "./NewResumeDetails.module.css";
 import Summary from "../Summary/Summary";
 import Skills from "../Skills/Skills";
 import Courses from "../Courses/Courses";

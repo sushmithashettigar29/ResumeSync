@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Internship.module.css";
 
-// Debounce function to optimize localStorage updates
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -15,20 +14,19 @@ const Internship = ({ navigateToNext }) => {
     { role: "", startMonth: "", endMonth: "", description: "" },
   ]);
 
-  // Load saved data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("internshipsData");
-    if (savedData) {
-      setInternships(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData?.internships) {
+      setInternships(savedData.internships);
     }
   }, []);
 
-  // Debounced save function for internships data
   const saveToLocalStorage = debounce((updatedInternships) => {
-    localStorage.setItem("internshipsData", JSON.stringify(updatedInternships));
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.internships = updatedInternships;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
   }, 300);
 
-  // Handle input changes for internships
   const handleChange = (index, field, value) => {
     const updatedInternships = [...internships];
     updatedInternships[index][field] = value;
@@ -36,7 +34,6 @@ const Internship = ({ navigateToNext }) => {
     saveToLocalStorage(updatedInternships);
   };
 
-  // Add a new internship
   const addInternship = () => {
     setInternships([
       ...internships,
@@ -44,7 +41,8 @@ const Internship = ({ navigateToNext }) => {
     ]);
   };
 
-  // Simple validation for internship fields
+  //remove internship need to be done if possible 
+
   const validate = () => {
     for (let i = 0; i < internships.length; i++) {
       const { role, startMonth, endMonth, description } = internships[i];
@@ -56,7 +54,6 @@ const Internship = ({ navigateToNext }) => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -77,7 +74,7 @@ const Internship = ({ navigateToNext }) => {
                   <input
                     type="text"
                     placeholder="Role"
-                    value={internship.role}
+                    value={internships.role}
                     onChange={(e) =>
                       handleChange(index, "role", e.target.value)
                     }
@@ -86,8 +83,8 @@ const Internship = ({ navigateToNext }) => {
                   />
                   <input
                     type="text"
-                    placeholder="Start Month"
-                    value={internship.startMonth}
+                    placeholder="Start Month (e.g., Jan 2023)"
+                    value={internships.startMonth}
                     onChange={(e) =>
                       handleChange(index, "startMonth", e.target.value)
                     }
@@ -98,8 +95,8 @@ const Internship = ({ navigateToNext }) => {
                 <div className={styles.row}>
                   <input
                     type="text"
-                    placeholder="End Month"
-                    value={internship.endMonth}
+                    placeholder="End Month (e.g., Dec 2023)"
+                    value={internships.endMonth}
                     onChange={(e) =>
                       handleChange(index, "endMonth", e.target.value)
                     }
@@ -108,7 +105,7 @@ const Internship = ({ navigateToNext }) => {
                   />
                   <textarea
                     placeholder="Description"
-                    value={internship.description}
+                    value={internships.description}
                     onChange={(e) =>
                       handleChange(index, "description", e.target.value)
                     }
@@ -116,7 +113,6 @@ const Internship = ({ navigateToNext }) => {
                     className={styles.textarea}
                   />
                 </div>
-                {/* Add line break or margin between internships */}
                 {index !== internships.length - 1 && <hr />}
               </div>
             ))}

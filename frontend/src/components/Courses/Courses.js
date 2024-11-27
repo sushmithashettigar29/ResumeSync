@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Courses.module.css";
 
-// Debounce function to optimize localStorage updates
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -15,20 +14,19 @@ const Courses = ({ navigateToNext }) => {
     { courseTitle: "", duration: "", offeredBy: "", completionYear: "" },
   ]);
 
-  // Load saved data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("courses");
-    if (savedData) {
-      setCourses(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData?.courses) {
+      setCourses(savedData.courses);
     }
   }, []);
 
-  // Debounced save function for courses
   const saveToLocalStorage = debounce((updatedCourses) => {
-    localStorage.setItem("courses", JSON.stringify(updatedCourses));
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.courses = updatedCourses;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
   }, 300);
 
-  // Handle input changes for courses
   const handleChange = (index, field, value) => {
     const updatedCourses = [...courses];
     updatedCourses[index][field] = value;
@@ -36,7 +34,6 @@ const Courses = ({ navigateToNext }) => {
     saveToLocalStorage(updatedCourses);
   };
 
-  // Add a new course
   const addCourse = () => {
     setCourses([
       ...courses,
@@ -44,10 +41,15 @@ const Courses = ({ navigateToNext }) => {
     ]);
   };
 
-  // Simple validation for course fields
+  const removeCourse = (index) => {
+    const updatedCourses = courses.filter((_, idx) => idx !== index);
+    setCourses(updatedCourses);
+    saveToLocalStorage(updatedCourses);
+  };
+  
   const validate = () => {
-    for (let i = 0; i < courses.length; i++) {
-      const { courseTitle, duration, offeredBy, completionYear } = courses[i];
+    for (const course of courses) {
+      const { courseTitle, duration, offeredBy, completionYear } = course;
       if (!courseTitle || !duration || !offeredBy || !completionYear) {
         alert("All fields are required for each course.");
         return false;
@@ -56,7 +58,6 @@ const Courses = ({ navigateToNext }) => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -68,72 +69,78 @@ const Courses = ({ navigateToNext }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.formContainer}>
-          <form onSubmit={handleSubmit} className={styles.form}>
-            {courses.map((course, index) => (
-              <div key={index} className={styles.courseContainer}>
-                <h3>Course {index + 1}</h3>
-                <div className={styles.row}>
-                  <input
-                    type="text"
-                    placeholder="Course Title"
-                    value={course.courseTitle}
-                    onChange={(e) =>
-                      handleChange(index, "courseTitle", e.target.value)
-                    }
-                    required
-                    className={styles.input}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Duration of Course"
-                    value={course.duration}
-                    onChange={(e) =>
-                      handleChange(index, "duration", e.target.value)
-                    }
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.row}>
-                  <input
-                    type="text"
-                    placeholder="Course Offered By"
-                    value={course.offeredBy}
-                    onChange={(e) =>
-                      handleChange(index, "offeredBy", e.target.value)
-                    }
-                    required
-                    className={styles.input}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Completion Year"
-                    value={course.completionYear}
-                    onChange={(e) =>
-                      handleChange(index, "completionYear", e.target.value)
-                    }
-                    required
-                    className={styles.input}
-                  />
-                </div>
-                {/* Add line break or margin between courses */}
-                {index !== courses.length - 1 && <hr />}
+        <h2>Courses Information</h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {courses.map((course, index) => (
+            <div key={index} className={styles.courseContainer}>
+              <h3>Course {index + 1}</h3>
+              <div className={styles.row}>
+                <input
+                  type="text"
+                  placeholder="Course Title"
+                  value={course.courseTitle}
+                  onChange={(e) =>
+                    handleChange(index, "courseTitle", e.target.value)
+                  }
+                  required
+                  className={styles.input}
+                />
+                <input
+                  type="text"
+                  placeholder="Duration"
+                  value={course.duration}
+                  onChange={(e) =>
+                    handleChange(index, "duration", e.target.value)
+                  }
+                  required
+                  className={styles.input}
+                />
               </div>
-            ))}
-            <button
-              type="button"
-              className={styles.addButton}
-              onClick={addCourse}
-            >
-              + Add More Course
-            </button>
+              <div className={styles.row}>
+                <input
+                  type="text"
+                  placeholder="Offered By"
+                  value={course.offeredBy}
+                  onChange={(e) =>
+                    handleChange(index, "offeredBy", e.target.value)
+                  }
+                  required
+                  className={styles.input}
+                />
+                <input
+                  type="text"
+                  placeholder="Completion Year"
+                  value={course.completionYear}
+                  onChange={(e) =>
+                    handleChange(index, "completionYear", e.target.value)
+                  }
+                  required
+                  className={styles.input}
+                />
+              </div>
+              <button
+                type="button"
+                className={styles.removeButton}
+                onClick={() => removeCourse(index)}
+              >
+                Remove
+              </button>
+              {index !== courses.length - 1 && <hr />}
+            </div>
+          ))}
 
-            <button type="submit" className={styles.submitButton}>
-              Submit
-            </button>
-          </form>
-        </div>
+          <button
+            type="button"
+            className={styles.addButton}
+            onClick={addCourse}
+          >
+            + Add More Course
+          </button>
+
+          <button type="submit" className={styles.submitButton}>
+            Submit
+          </button>
+        </form>
       </div>
     </div>
   );

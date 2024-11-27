@@ -21,6 +21,7 @@ import ActivitiesParticipation from "./components/ActivitiesParticipation/Activi
 import Project from "./components/Project/Project";
 import Hobbies from "./components/Hobbies/Hobbies";
 import JobDescriptionUpload from "./components/JobDescriptionUpload/JobDescriptionUpload";
+import ResumeCreator from "./components/ResumeCreator/ResumeCreator";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
       <Route path="/hobbies" element={<Hobbies />} />
       <Route path="/new-resume-details" element={<NewResumeDetails />} />
       <Route path="/job-descrip-upload" element={<JobDescriptionUpload />} />
+      <Route path="/resume-creator" element={<ResumeCreator />} />
     </Routes>
   );
 };

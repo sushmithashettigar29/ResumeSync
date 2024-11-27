@@ -117,6 +117,7 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
                       className={styles.textarea}
                     />
                   </div>
+                  {/* Add line break or margin between activities */}
                   <hr />
                 </li>
               ))}

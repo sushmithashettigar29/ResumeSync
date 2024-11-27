@@ -52,7 +52,9 @@ const Project = ({ navigateToNext }) => {
         alert("All fields are required for each project.");
         return false;
       }
-      if (!/^[a-zA-Z]+ \d{4}$/.test(startMonth) || !/^[a-zA-Z]+ \d{4}$/.test(endMonth)) {
+      // Validate month-year format (e.g., January 2022)
+      const monthYearPattern = /^[a-zA-Z]+ \d{4}$/;
+      if (!monthYearPattern.test(startMonth) || !monthYearPattern.test(endMonth)) {
         alert("Please enter valid month-year format (e.g., January 2022).");
         return false;
       }

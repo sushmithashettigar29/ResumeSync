@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./JobDescriptionUpload.module.css";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook from react-router-dom
 
-// Debounce function to optimize localStorage updates
-const debounce = (func, delay) => {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => func(...args), delay);
-  };
-};
-
-const JobDescriptionUpload = ({ navigateToNext }) => {
+const JobDescriptionUpload = () => {
   const [formData, setFormData] = useState({
     jobTitle: "",
     jobDescription: "",
     file: null,
   });
+  const navigate = useNavigate();
 
   // Debounced save function for form data
-  const saveToLocalStorage = debounce((updatedData) => {
+  const saveToLocalStorage = (updatedData) => {
     localStorage.setItem("jobDescriptionData", JSON.stringify(updatedData));
-  }, 300);
+  };
 
   // Handle input changes for text and file
   const handleChange = (e) => {
@@ -32,7 +25,7 @@ const JobDescriptionUpload = ({ navigateToNext }) => {
           ...prevState,
           file: files[0], // Store the selected file
         };
-        saveToLocalStorage(updatedState); // Debounced save
+        saveToLocalStorage(updatedState); // Save to localStorage
         return updatedState;
       });
     } else {
@@ -41,19 +34,11 @@ const JobDescriptionUpload = ({ navigateToNext }) => {
           ...prevState,
           [name]: value,
         };
-        saveToLocalStorage(updatedState); // Debounced save
+        saveToLocalStorage(updatedState); // Save to localStorage
         return updatedState;
       });
     }
   };
-
-  // Load saved data from localStorage on component mount
-  useEffect(() => {
-    const savedData = localStorage.getItem("jobDescriptionData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    }
-  }, []);
 
   // Simple validation for job description and file
   const validate = () => {
@@ -71,7 +56,9 @@ const JobDescriptionUpload = ({ navigateToNext }) => {
     e.preventDefault();
     if (validate()) {
       console.log("Job Description Data Submitted: ", formData);
-      navigateToNext(); // Navigate to the next section
+      // Store data in localStorage and navigate to resume generation page
+      saveToLocalStorage(formData);
+      navigate("/resume-creator"); // Navigate to ResumeCreator page
     }
   };
 

@@ -17,9 +17,9 @@ const PersonalInformation = ({ navigateToNext }) => {
 
   // Load saved data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("personalInformation");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData && savedData.personalInformation) {
+      setFormData(savedData.personalInformation);
     }
   }, []);
 
@@ -29,8 +29,13 @@ const PersonalInformation = ({ navigateToNext }) => {
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
 
-    // Save to localStorage
-    localStorage.setItem("personalInformation", JSON.stringify(updatedData));
+    // Save to localStorage temporarily for autosave functionality
+    const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    const updatedResumeData = {
+      ...existingData,
+      personalInformation: updatedData,
+    };
+    localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
   };
 
   // Validate fields
@@ -52,8 +57,17 @@ const PersonalInformation = ({ navigateToNext }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (validate()) {
-      console.log("Form Data Submitted: ", formData);
+      const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
+
+      const updatedData = {
+        ...existingData,
+        personalInformation: formData,
+      };
+
+      localStorage.setItem("resumeData", JSON.stringify(updatedData));
+      console.log("Updated resumeData saved to localStorage:", updatedData);
       navigateToNext();
     }
   };

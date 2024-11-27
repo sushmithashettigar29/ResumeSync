@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Summary.module.css";
 
-// Debounce function to optimize localStorage updates
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -11,36 +10,33 @@ const debounce = (func, delay) => {
 };
 
 const Summary = ({ navigateToNext }) => {
-  const [formData, setFormData] = useState({
-    summary: "",
-  });
+  const [summary, setSummary] = useState("");
 
-  // Load saved data from localStorage on component mount
+  // Load saved summary from localStorage
   useEffect(() => {
-    const savedData = localStorage.getItem("summaryData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData?.summary) {
+      setSummary(savedData.summary);
     }
   }, []);
 
-  // Debounced save function for summary data
-  const saveToLocalStorage = debounce((updatedData) => {
-    localStorage.setItem("summaryData", JSON.stringify(updatedData));
+  // Save updated summary to localStorage
+  const saveToLocalStorage = debounce((updatedSummary) => {
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.summary = updatedSummary;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
   }, 300);
 
-  // Handle input changes for summary
+  // Handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => {
-      const updatedForm = { ...prevState, [name]: value };
-      saveToLocalStorage(updatedForm); // Debounced save
-      return updatedForm;
-    });
+    const { value } = e.target;
+    setSummary(value);
+    saveToLocalStorage(value);
   };
 
-  // Simple validation for summary
+  // Validate the summary
   const validate = () => {
-    if (!formData.summary.trim()) {
+    if (!summary.trim()) {
       alert("Summary cannot be empty.");
       return false;
     }
@@ -51,7 +47,7 @@ const Summary = ({ navigateToNext }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form Data Submitted: ", formData);
+      console.log("Summary Form Submitted: ", summary);
       navigateToNext();
     }
   };
@@ -65,8 +61,8 @@ const Summary = ({ navigateToNext }) => {
               <input
                 type="text"
                 name="summary"
-                placeholder="Write short summary about yourself"
-                value={formData.summary}
+                placeholder="Write a short summary about yourself"
+                value={summary}
                 onChange={handleChange}
                 required
                 className={styles.input}

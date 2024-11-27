@@ -64,7 +64,8 @@ const Hobbies = ({ navigateToNext }) => {
     e.preventDefault();
     if (validate()) {
       console.log("Hobbies Submitted: ", formData);
-      //localStorage.clear(); // Clear localStorage on submit
+      // Optionally, clear localStorage on submit if needed
+      // localStorage.clear();
       navigateToNext();
     }
   };
