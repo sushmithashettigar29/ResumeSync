@@ -8,8 +8,8 @@ const PersonalInformation = ({ navigateToNext }) => {
     address: "",
     mobileNumber: "",
     email: "",
-    LinkedIn: "",
-    GitHub: "",
+    linkedIn: "",
+    gitHub: "",
     Portfolio: "",
   });
 
@@ -47,10 +47,10 @@ const PersonalInformation = ({ navigateToNext }) => {
       newErrors.email = "Valid email is required.";
     if (!formData.mobileNumber || formData.mobileNumber.length !== 10)
       newErrors.mobileNumber = "Mobile number must be 10 digits.";
-    if (!formData.LinkedIn || !formData.LinkedIn.startsWith("http"))
-      newErrors.LinkedIn = "Valid LinkedIn URL is required.";
-    if (formData.GitHub && !formData.GitHub.startsWith("http"))
-      newErrors.GitHub = "GitHub URL must start with http.";
+    if (!formData.linkedIn || !formData.linkedIn.startsWith("http"))
+      newErrors.linkedIn = "Valid linkedIn URL is required.";
+    if (formData.gitHub && !formData.gitHub.startsWith("http"))
+      newErrors.gitHub = "gitHub URL must start with http.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -90,7 +90,9 @@ const PersonalInformation = ({ navigateToNext }) => {
                   required
                   className={styles.input}
                 />
-                {errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                {errors.firstName && (
+                  <span className={styles.error}>{errors.firstName}</span>
+                )}
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="lastName">Last Name</label>
@@ -104,7 +106,9 @@ const PersonalInformation = ({ navigateToNext }) => {
                   required
                   className={styles.input}
                 />
-                {errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                {errors.lastName && (
+                  <span className={styles.error}>{errors.lastName}</span>
+                )}
               </div>
             </div>
             <div className={styles.row}>
@@ -133,7 +137,9 @@ const PersonalInformation = ({ navigateToNext }) => {
                   required
                   className={styles.input}
                 />
-                {errors.mobileNumber && <span className={styles.error}>{errors.mobileNumber}</span>}
+                {errors.mobileNumber && (
+                  <span className={styles.error}>{errors.mobileNumber}</span>
+                )}
               </div>
             </div>
             <div className={styles.row}>
@@ -149,34 +155,40 @@ const PersonalInformation = ({ navigateToNext }) => {
                   required
                   className={styles.input}
                 />
-                {errors.email && <span className={styles.error}>{errors.email}</span>}
+                {errors.email && (
+                  <span className={styles.error}>{errors.email}</span>
+                )}
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="LinkedIn">LinkedIn Profile</label>
+                <label htmlFor="linkedIn">linkedIn Profile</label>
                 <input
                   type="text"
-                  name="LinkedIn"
-                  id="LinkedIn"
-                  placeholder="LinkedIn Profile Link"
-                  value={formData.LinkedIn}
+                  name="linkedIn"
+                  id="linkedIn"
+                  placeholder="linkedIn Profile Link"
+                  value={formData.linkedIn}
                   onChange={handleChange}
                   required
                   className={styles.input}
                 />
-                {errors.LinkedIn && <span className={styles.error}>{errors.LinkedIn}</span>}
+                {errors.linkedIn && (
+                  <span className={styles.error}>{errors.linkedIn}</span>
+                )}
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="GitHub">GitHub Profile</label>
+                <label htmlFor="gitHub">gitHub Profile</label>
                 <input
                   type="text"
-                  name="GitHub"
-                  id="GitHub"
-                  placeholder="GitHub Profile Link"
-                  value={formData.GitHub}
+                  name="gitHub"
+                  id="gitHub"
+                  placeholder="gitHub Profile Link"
+                  value={formData.gitHub}
                   onChange={handleChange}
                   className={styles.input}
                 />
-                {errors.GitHub && <span className={styles.error}>{errors.GitHub}</span>}
+                {errors.gitHub && (
+                  <span className={styles.error}>{errors.gitHub}</span>
+                )}
               </div>
               <div className={styles.inputGroup}>
                 <label htmlFor="Portfolio">Portfolio</label>

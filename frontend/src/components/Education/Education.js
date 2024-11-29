@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Education.module.css";
 
-// Debounce function to optimize localStorage updates
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -11,7 +10,7 @@ const debounce = (func, delay) => {
 };
 
 const Education = ({ navigateToNext }) => {
-  const [formData, setFormData] = useState({
+  const [education, setEducation] = useState({
     courseName: "",
     collegeOrSchoolName: "",
     startingYear: "",
@@ -22,91 +21,55 @@ const Education = ({ navigateToNext }) => {
 
   const [errors, setErrors] = useState({});
 
-  // Debounced save function for education data
-  const saveToLocalStorage = debounce((updatedData) => {
-    const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
-    const updatedResumeData = {
-      ...existingData,
-      education: updatedData,
-    };
-    localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
-  }, 300);
-
-  // Load saved data from localStorage on component mount
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("resumeData"));
-    if (savedData && savedData.education) {
-      setFormData(savedData.education);
+    if (savedData?.education) {
+      setEducation(savedData.education);
     }
   }, []);
 
-  // Handle input changes
+  const saveToLocalStorage = debounce((updatedEducation) => {
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.education = updatedEducation;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
+  }, 300);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
-    const updatedFormData = {
-      ...formData,
+    const updatedEducation = {
+      ...education,
       [name]: type === "checkbox" ? checked : value,
       ...(name === "currentlyStudying" && {
-        endingYear: checked ? "" : formData.endingYear,
+        endingYear: checked ? "" : education.endingYear,
       }),
     };
-
-    setFormData(updatedFormData);
-    saveToLocalStorage(updatedFormData); // Debounced save
+    setEducation(updatedEducation);
+    saveToLocalStorage(updatedEducation);
   };
 
-  // Validate fields
   const validate = () => {
     const newErrors = {};
-    if (!formData.courseName) newErrors.courseName = "Course name is required.";
-    if (!formData.collegeOrSchoolName)
+    if (!education.courseName) newErrors.courseName = "Course name is required.";
+    if (!education.collegeOrSchoolName)
       newErrors.collegeOrSchoolName = "College/School name is required.";
-    if (!formData.startingYear)
+    if (!education.startingYear)
       newErrors.startingYear = "Starting year is required.";
     if (
-      !formData.currentlyStudying &&
-      (!formData.endingYear || isNaN(formData.endingYear))
+      !education.currentlyStudying &&
+      (!education.endingYear || isNaN(education.endingYear))
     )
-      newErrors.endingYear = "Ending year is required.";
-    if (!formData.percentageOrCGPA)
+      newErrors.endingYear = "Valid ending year is required.";
+    if (!education.percentageOrCGPA)
       newErrors.percentageOrCGPA = "Percentage/CGPA is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (validate()) {
-  //     const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
-  //     const updatedResumeData = {
-  //       ...existingData,
-  //       education: formData,
-  //     };
-  //     localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
-  //     console.log("Updated resumeData saved to localStorage:", updatedResumeData);
-  //     navigateToNext();
-  //   }
-  // };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      const updatedResumeData = {
-        ...(JSON.parse(localStorage.getItem("resumeData")) || {}),
-        education: {
-          courseName: formData.courseName || "N/A",
-          collegeOrSchoolName: formData.collegeOrSchoolName || "N/A",
-          startingYear: formData.startingYear || "N/A",
-          endingYear: formData.currentlyStudying
-            ? "Present"
-            : formData.endingYear || "N/A",
-          percentageOrCGPA: formData.percentageOrCGPA || "N/A",
-        },
-      };
-      localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
-      console.log("Saved education data:", updatedResumeData);
+      console.log("Education Form Submitted: ", education);
       navigateToNext();
     }
   };
@@ -121,7 +84,7 @@ const Education = ({ navigateToNext }) => {
                 type="text"
                 name="courseName"
                 placeholder="Course Name"
-                value={formData.courseName}
+                value={education.courseName}
                 onChange={handleChange}
                 className={styles.input}
               />
@@ -132,7 +95,7 @@ const Education = ({ navigateToNext }) => {
                 type="text"
                 name="collegeOrSchoolName"
                 placeholder="College/School Name"
-                value={formData.collegeOrSchoolName}
+                value={education.collegeOrSchoolName}
                 onChange={handleChange}
                 className={styles.input}
               />
@@ -148,7 +111,7 @@ const Education = ({ navigateToNext }) => {
                 type="text"
                 name="startingYear"
                 placeholder="Starting Year (e.g. 2020)"
-                value={formData.startingYear}
+                value={education.startingYear}
                 onChange={handleChange}
                 className={styles.input}
               />
@@ -159,10 +122,10 @@ const Education = ({ navigateToNext }) => {
                 type="text"
                 name="endingYear"
                 placeholder="Ending Year (e.g. 2024)"
-                value={formData.endingYear}
+                value={education.endingYear}
                 onChange={handleChange}
                 className={styles.input}
-                disabled={formData.currentlyStudying}
+                disabled={education.currentlyStudying}
               />
               {errors.endingYear && (
                 <span className={styles.error}>{errors.endingYear}</span>
@@ -171,7 +134,7 @@ const Education = ({ navigateToNext }) => {
                 <input
                   type="checkbox"
                   name="currentlyStudying"
-                  checked={formData.currentlyStudying}
+                  checked={education.currentlyStudying}
                   onChange={handleChange}
                   className={styles.checkbox}
                 />
@@ -184,12 +147,14 @@ const Education = ({ navigateToNext }) => {
                 type="text"
                 name="percentageOrCGPA"
                 placeholder="Percentage/CGPA"
-                value={formData.percentageOrCGPA}
+                value={education.percentageOrCGPA}
                 onChange={handleChange}
                 className={styles.input}
               />
               {errors.percentageOrCGPA && (
-                <span className={styles.error}>{errors.percentageOrCGPA}</span>
+                <span className={styles.error}>
+                  {errors.percentageOrCGPA}
+                </span>
               )}
             </div>
 

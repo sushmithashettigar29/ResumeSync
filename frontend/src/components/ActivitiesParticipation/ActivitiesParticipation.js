@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ActivitiesParticipation.module.css";
 
-// Debounce function to optimize localStorage updates
 const debounce = (func, delay) => {
   let timer;
   return (...args) => {
@@ -15,20 +14,19 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
     { eventName: "", role: "", duration: "", description: "" },
   ]);
 
-  // Load saved data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("activities");
-    if (savedData) {
-      setActivities(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData?.activities) {
+      setActivities(savedData.activities);
     }
   }, []);
 
-  // Debounced save function for activities
   const saveToLocalStorage = debounce((updatedActivities) => {
-    localStorage.setItem("activities", JSON.stringify(updatedActivities));
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.activities = updatedActivities;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
   }, 300);
 
-  // Handle input changes for activities
   const handleChange = (index, field, value) => {
     const updatedActivities = [...activities];
     updatedActivities[index][field] = value;
@@ -36,7 +34,6 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
     saveToLocalStorage(updatedActivities);
   };
 
-  // Add a new activity
   const addActivity = () => {
     setActivities([
       ...activities,
@@ -44,7 +41,8 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
     ]);
   };
 
-  // Simple validation for activity fields
+  //remove activities need to be done if possible
+
   const validate = () => {
     for (let i = 0; i < activities.length; i++) {
       const { eventName, role, duration, description } = activities[i];

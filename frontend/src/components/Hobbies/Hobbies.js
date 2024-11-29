@@ -11,47 +11,43 @@ const debounce = (func, delay) => {
 };
 
 const Hobbies = ({ navigateToNext }) => {
-  const [formData, setFormData] = useState({
-    hobbies: [""],
-  });
+  const [hobbies, setHobbies] = useState([""]);
 
-  // Load saved hobbies data from localStorage on component mount
+  // Load hobbies data from localStorage on component mount
   useEffect(() => {
-    const savedData = localStorage.getItem("hobbiesData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
+    const savedData = JSON.parse(localStorage.getItem("resumeData"));
+    if (savedData?.hobbies) {
+      setHobbies(savedData.hobbies);
     }
   }, []);
 
-  // Debounced save function for hobbies data
-  const saveToLocalStorage = debounce((updatedData) => {
-    localStorage.setItem("hobbiesData", JSON.stringify(updatedData));
+  // Save hobbies to localStorage (debounced)
+  const saveToLocalStorage = debounce((updatedHobbies) => {
+    const resumeData = JSON.parse(localStorage.getItem("resumeData")) || {};
+    resumeData.hobbies = updatedHobbies;
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
   }, 300);
 
-  // Handle hobby input changes for a specific index
+  // Handle input changes for hobbies
   const handleHobbyChange = (index, value) => {
-    const updatedHobbies = [...formData.hobbies];
+    const updatedHobbies = [...hobbies];
     updatedHobbies[index] = value;
-
-    setFormData((prev) => {
-      const updatedForm = { ...prev, hobbies: updatedHobbies };
-      saveToLocalStorage(updatedForm); // Debounced save
-      return updatedForm;
-    });
+    setHobbies(updatedHobbies);
+    saveToLocalStorage(updatedHobbies);
   };
 
   // Add a new empty hobby input
   const addHobby = () => {
-    setFormData((prev) => {
-      const updatedForm = { ...prev, hobbies: [...prev.hobbies, ""] };
-      saveToLocalStorage(updatedForm); // Debounced save
-      return updatedForm;
+    setHobbies((prevHobbies) => {
+      const updatedHobbies = [...prevHobbies, ""];
+      saveToLocalStorage(updatedHobbies);
+      return updatedHobbies;
     });
   };
 
-  // Simple validation for hobby fields
+  // Validate hobbies input
   const validate = () => {
-    const hobbiesFilled = formData.hobbies.filter((hobby) => hobby.trim() !== "");
+    const hobbiesFilled = hobbies.filter((hobby) => hobby.trim() !== "");
     if (hobbiesFilled.length === 0) {
       alert("Please add at least one hobby.");
       return false;
@@ -63,9 +59,7 @@ const Hobbies = ({ navigateToNext }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Hobbies Submitted: ", formData);
-      // Optionally, clear localStorage on submit if needed
-      // localStorage.clear();
+      console.log("Hobbies Submitted: ", hobbies);
       navigateToNext();
     }
   };
@@ -75,7 +69,7 @@ const Hobbies = ({ navigateToNext }) => {
       <div className={styles.content}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <ul className={styles.hobbiesList}>
-            {formData.hobbies.map((hobby, index) => (
+            {hobbies.map((hobby, index) => (
               <li key={index} className={styles.hobbyItem}>
                 <input
                   type="text"
