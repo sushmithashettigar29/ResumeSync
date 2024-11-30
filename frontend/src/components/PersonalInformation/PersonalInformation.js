@@ -11,15 +11,18 @@ const PersonalInformation = ({ navigateToNext }) => {
     linkedIn: "",
     gitHub: "",
     Portfolio: "",
+    profileImage: null, // New field for image
   });
 
   const [errors, setErrors] = useState({});
+  const [imagePreview, setImagePreview] = useState(null); // To display the uploaded image
 
   // Load saved data from localStorage on component mount
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("resumeData"));
     if (savedData && savedData.personalInformation) {
       setFormData(savedData.personalInformation);
+      setImagePreview(savedData.personalInformation.profileImage); // Load saved image preview
     }
   }, []);
 
@@ -36,6 +39,30 @@ const PersonalInformation = ({ navigateToNext }) => {
       personalInformation: updatedData,
     };
     localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
+  };
+
+  // Handle image upload
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagePreview(reader.result); // Set image preview
+        const updatedData = { ...formData, profileImage: reader.result }; // Save image data as Base64
+        setFormData(updatedData);
+
+        // Save to localStorage
+        const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
+        const updatedResumeData = {
+          ...existingData,
+          personalInformation: updatedData,
+        };
+        localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert("Please upload a valid image file.");
+    }
   };
 
   // Validate fields
@@ -79,7 +106,7 @@ const PersonalInformation = ({ navigateToNext }) => {
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.row}>
               <div className={styles.inputGroup}>
-                <label htmlFor="firstName">First Name</label>
+                
                 <input
                   type="text"
                   name="firstName"
@@ -95,7 +122,6 @@ const PersonalInformation = ({ navigateToNext }) => {
                 )}
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="lastName">Last Name</label>
                 <input
                   type="text"
                   name="lastName"
@@ -113,7 +139,7 @@ const PersonalInformation = ({ navigateToNext }) => {
             </div>
             <div className={styles.row}>
               <div className={styles.inputGroup}>
-                <label htmlFor="address">Address</label>
+                
                 <input
                   type="text"
                   name="address"
@@ -126,7 +152,7 @@ const PersonalInformation = ({ navigateToNext }) => {
                 />
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="mobileNumber">Mobile Number</label>
+                
                 <input
                   type="number"
                   name="mobileNumber"
@@ -144,7 +170,7 @@ const PersonalInformation = ({ navigateToNext }) => {
             </div>
             <div className={styles.row}>
               <div className={styles.inputGroup}>
-                <label htmlFor="email">Email Address</label>
+                
                 <input
                   type="email"
                   name="email"
@@ -160,12 +186,12 @@ const PersonalInformation = ({ navigateToNext }) => {
                 )}
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="linkedIn">linkedIn Profile</label>
+                
                 <input
                   type="text"
                   name="linkedIn"
                   id="linkedIn"
-                  placeholder="linkedIn Profile Link"
+                  placeholder="LinkedIn Profile Link"
                   value={formData.linkedIn}
                   onChange={handleChange}
                   required
@@ -175,13 +201,15 @@ const PersonalInformation = ({ navigateToNext }) => {
                   <span className={styles.error}>{errors.linkedIn}</span>
                 )}
               </div>
+            </div>
+            <div className={styles.row}>
               <div className={styles.inputGroup}>
-                <label htmlFor="gitHub">gitHub Profile</label>
+                
                 <input
                   type="text"
                   name="gitHub"
                   id="gitHub"
-                  placeholder="gitHub Profile Link"
+                  placeholder="GitHub Profile Link"
                   value={formData.gitHub}
                   onChange={handleChange}
                   className={styles.input}
@@ -191,7 +219,7 @@ const PersonalInformation = ({ navigateToNext }) => {
                 )}
               </div>
               <div className={styles.inputGroup}>
-                <label htmlFor="Portfolio">Portfolio</label>
+                
                 <input
                   type="text"
                   name="Portfolio"
@@ -202,6 +230,27 @@ const PersonalInformation = ({ navigateToNext }) => {
                   className={styles.input}
                 />
               </div>
+            </div>
+            <div className={styles.inputGroup}>
+              <label htmlFor="profileImage">Upload Profile Image</label>
+              <br />
+              <input
+                type="file"
+                name="profileImage"
+                id="profileImage"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className={styles.input}
+              />
+              {imagePreview && (
+                <div className={styles.imagePreview}>
+                  <img
+                    src={imagePreview}
+                    alt="Profile Preview"
+                    className={styles.previewImage}
+                  />
+                </div>
+              )}
             </div>
             <button type="submit" className={styles["next-button"]}>
               Next
