@@ -2,7 +2,6 @@
   display: flex;
   height: 100vh;
   flex-direction: column;
-  font-family: Arial, sans-serif;
 }
 
 .detailsContainer {
@@ -36,8 +35,13 @@
 
 .details {
   flex: 1;
-  padding: 20px;
   overflow-y: auto;
+  background-image: url("./backroundimg.png");
+  background-size: cover; 
+  background-repeat: no-repeat;
+  background-position: center; 
+  margin: 0; 
+  overflow: hidden; 
 }
 h2{
   text-align: center;

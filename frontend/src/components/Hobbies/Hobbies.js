@@ -45,13 +45,29 @@ const Hobbies = ({ navigateToNext }) => {
     });
   };
 
+  // Remove a specific hobby
+  const removeHobby = (index) => {
+    const updatedHobbies = hobbies.filter((_, i) => i !== index);
+    setHobbies(updatedHobbies);
+    saveToLocalStorage(updatedHobbies);
+  };
+
   // Validate hobbies input
   const validate = () => {
-    const hobbiesFilled = hobbies.filter((hobby) => hobby.trim() !== "");
+    const hobbiesFilled = hobbies
+      .map((hobby) => hobby.trim())
+      .filter((hobby) => hobby !== "");
+
     if (hobbiesFilled.length === 0) {
       alert("Please add at least one hobby.");
       return false;
     }
+
+    if (new Set(hobbiesFilled).size !== hobbiesFilled.length) {
+      alert("Duplicate hobbies are not allowed.");
+      return false;
+    }
+
     return true;
   };
 
@@ -78,6 +94,13 @@ const Hobbies = ({ navigateToNext }) => {
                   onChange={(e) => handleHobbyChange(index, e.target.value)}
                   className={styles.input}
                 />
+                <button
+                  type="button"
+                  className={styles.removeButton}
+                  onClick={() => removeHobby(index)}
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>

@@ -15,13 +15,11 @@ const PersonalInformation = ({ navigateToNext }) => {
   });
 
   const [errors, setErrors] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("resumeData"));
     if (savedData && savedData.personalInformation) {
       setFormData(savedData.personalInformation);
-      setImagePreview(savedData.personalInformation.profileImage);
     }
   }, []);
 
@@ -43,7 +41,6 @@ const PersonalInformation = ({ navigateToNext }) => {
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result);
         const updatedData = { ...formData, profileImage: reader.result }; 
         setFormData(updatedData);
 

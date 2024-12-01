@@ -35,13 +35,22 @@ const Internship = ({ navigateToNext }) => {
   };
 
   const addInternship = () => {
+    const lastInternship = internships[internships.length - 1];
+    if (!lastInternship.role || !lastInternship.startMonth || !lastInternship.endMonth || !lastInternship.description) {
+      alert("Please complete all fields in the current internship before adding a new one.");
+      return;
+    }
     setInternships([
       ...internships,
       { role: "", startMonth: "", endMonth: "", description: "" },
     ]);
   };
 
-  //remove internship need to be done if possible 
+  const removeInternship = (index) => {
+    const updatedInternships = internships.filter((_, i) => i !== index);
+    setInternships(updatedInternships);
+    saveToLocalStorage(updatedInternships);
+  };
 
   const validate = () => {
     for (let i = 0; i < internships.length; i++) {
@@ -74,38 +83,40 @@ const Internship = ({ navigateToNext }) => {
                   <input
                     type="text"
                     placeholder="Role"
-                    value={internships.role}
+                    value={internship.role}
                     onChange={(e) =>
                       handleChange(index, "role", e.target.value)
                     }
                     required
-                    className={styles.input}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Start Month (e.g., Jan 2023)"
-                    value={internships.startMonth}
-                    onChange={(e) =>
-                      handleChange(index, "startMonth", e.target.value)
-                    }
-                    required
-                    className={styles.input}
+                    className={`${styles.input} ${styles.inputfield}`}
                   />
                 </div>
                 <div className={styles.row}>
                   <input
                     type="text"
+                    placeholder="Start Month (e.g., Jan 2023)"
+                    value={internship.startMonth}
+                    onChange={(e) =>
+                      handleChange(index, "startMonth", e.target.value)
+                    }
+                    required
+                    className={`${styles.input} ${styles.inputfield}`}
+                  />
+                  <input
+                    type="text"
                     placeholder="End Month (e.g., Dec 2023)"
-                    value={internships.endMonth}
+                    value={internship.endMonth}
                     onChange={(e) =>
                       handleChange(index, "endMonth", e.target.value)
                     }
                     required
-                    className={styles.input}
+                    className={`${styles.input} ${styles.inputfield}`}
                   />
+                </div>
+                <div className={styles.row}>
                   <textarea
                     placeholder="Description"
-                    value={internships.description}
+                    value={internship.description}
                     onChange={(e) =>
                       handleChange(index, "description", e.target.value)
                     }
@@ -113,6 +124,13 @@ const Internship = ({ navigateToNext }) => {
                     className={styles.textarea}
                   />
                 </div>
+                <button
+                  type="button"
+                  className={styles.removeButton}
+                  onClick={() => removeInternship(index)}
+                >
+                  Remove
+                </button>
                 {index !== internships.length - 1 && <hr />}
               </div>
             ))}
@@ -123,7 +141,6 @@ const Internship = ({ navigateToNext }) => {
             >
               + Add More Internship
             </button>
-
             <button type="submit" className={styles.submitButton}>
               Submit
             </button>

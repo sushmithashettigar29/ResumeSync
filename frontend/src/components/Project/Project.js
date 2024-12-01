@@ -35,26 +35,44 @@ const Project = ({ navigateToNext }) => {
   };
 
   const addProject = () => {
+    const lastProject = projects[projects.length - 1];
+    if (
+      !lastProject.title ||
+      !lastProject.startMonth ||
+      !lastProject.endMonth ||
+      !lastProject.description
+    ) {
+      alert(
+        "Please complete all fields in the current project before adding a new one."
+      );
+      return;
+    }
     setProjects([
       ...projects,
       { title: "", startMonth: "", endMonth: "", description: "" },
     ]);
   };
 
+  const removeProject = (index) => {
+    const updatedProjects = projects.filter((_, i) => i !== index);
+    setProjects(updatedProjects);
+    saveToLocalStorage(updatedProjects);
+  };
+
   const validate = () => {
+    const monthYearPattern = /^[a-zA-Z]+ \d{4}$/;
+
     for (let i = 0; i < projects.length; i++) {
       const { title, startMonth, endMonth, description } = projects[i];
       if (!title || !startMonth || !endMonth || !description) {
         alert("All fields are required for each project.");
         return false;
       }
-      // Validate month-year format (e.g., January 2022)
-      const monthYearPattern = /^[a-zA-Z]+ \d{4}$/;
       if (
         !monthYearPattern.test(startMonth) ||
         !monthYearPattern.test(endMonth)
       ) {
-        alert("Please enter valid month-year format (e.g., January 2022).");
+        alert("Please enter a valid month-year format (e.g., January 2022).");
         return false;
       }
     }
@@ -87,30 +105,32 @@ const Project = ({ navigateToNext }) => {
                         handleChange(index, "title", e.target.value)
                       }
                       required
-                      className={styles.input}
-                    />
-                    <input
-                      type="text"
-                      placeholder="Start Month (e.g. January 2022)"
-                      value={project.startMonth}
-                      onChange={(e) =>
-                        handleChange(index, "startMonth", e.target.value)
-                      }
-                      required
-                      className={styles.input}
+                      className={`${styles.input} ${styles.inputfield}`}
                     />
                   </div>
                   <div className={styles.row}>
                     <input
                       type="text"
-                      placeholder="End Month (e.g. December 2022)"
+                      placeholder="Start Month (e.g., January 2022)"
+                      value={project.startMonth}
+                      onChange={(e) =>
+                        handleChange(index, "startMonth", e.target.value)
+                      }
+                      required
+                      className={`${styles.input} ${styles.inputfield}`}
+                    />
+                    <input
+                      type="text"
+                      placeholder="End Month (e.g., December 2022)"
                       value={project.endMonth}
                       onChange={(e) =>
                         handleChange(index, "endMonth", e.target.value)
                       }
                       required
-                      className={styles.input}
+                      className={`${styles.input} ${styles.inputfield}`}
                     />
+                  </div>
+                  <div className={styles.row}>
                     <textarea
                       placeholder="Description"
                       value={project.description}
@@ -121,7 +141,14 @@ const Project = ({ navigateToNext }) => {
                       className={styles.textarea}
                     />
                   </div>
-                  <hr />
+                  <button
+                    type="button"
+                    className={styles.removeButton}
+                    onClick={() => removeProject(index)}
+                  >
+                    Remove Project
+                  </button>
+                  {index !== projects.length - 1 && <hr />}
                 </li>
               ))}
             </ul>
@@ -132,7 +159,6 @@ const Project = ({ navigateToNext }) => {
             >
               + Add More Project
             </button>
-
             <button type="submit" className={styles.submitButton}>
               Submit
             </button>

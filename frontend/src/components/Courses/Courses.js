@@ -43,15 +43,19 @@ const Courses = ({ navigateToNext }) => {
 
   const removeCourse = (index) => {
     const updatedCourses = courses.filter((_, idx) => idx !== index);
-    setCourses(updatedCourses);
+    setCourses(updatedCourses.length ? updatedCourses : [{ courseTitle: "", duration: "", offeredBy: "", completionYear: "" }]);
     saveToLocalStorage(updatedCourses);
   };
-  
+
   const validate = () => {
     for (const course of courses) {
       const { courseTitle, duration, offeredBy, completionYear } = course;
       if (!courseTitle || !duration || !offeredBy || !completionYear) {
         alert("All fields are required for each course.");
+        return false;
+      }
+      if (isNaN(completionYear) || completionYear < 1900 || completionYear > new Date().getFullYear()) {
+        alert("Please enter a valid completion year.");
         return false;
       }
     }
@@ -62,6 +66,7 @@ const Courses = ({ navigateToNext }) => {
     e.preventDefault();
     if (validate()) {
       console.log("Courses Form Submitted: ", courses);
+      alert("Courses submitted successfully!");
       navigateToNext();
     }
   };
@@ -69,7 +74,6 @@ const Courses = ({ navigateToNext }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <h2>Courses Information</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           {courses.map((course, index) => (
             <div key={index} className={styles.courseContainer}>

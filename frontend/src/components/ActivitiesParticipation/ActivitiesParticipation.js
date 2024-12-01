@@ -35,13 +35,29 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
   };
 
   const addActivity = () => {
+    const lastActivity = activities[activities.length - 1];
+    if (
+      !lastActivity.eventName ||
+      !lastActivity.role ||
+      !lastActivity.duration ||
+      !lastActivity.description
+    ) {
+      alert(
+        "Please complete all fields in the current activity before adding a new one."
+      );
+      return;
+    }
     setActivities([
       ...activities,
       { eventName: "", role: "", duration: "", description: "" },
     ]);
   };
 
-  //remove activities need to be done if possible
+  const removeActivity = (index) => {
+    const updatedActivities = activities.filter((_, i) => i !== index);
+    setActivities(updatedActivities);
+    saveToLocalStorage(updatedActivities);
+  };
 
   const validate = () => {
     for (let i = 0; i < activities.length; i++) {
@@ -54,7 +70,6 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -80,9 +95,11 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
                       onChange={(e) =>
                         handleChange(index, "eventName", e.target.value)
                       }
+                      className={`${styles.input} ${styles.inputfield}`}
                       required
-                      className={styles.input}
                     />
+                  </div>
+                  <div className={styles.row}>
                     <input
                       type="text"
                       placeholder="Role"
@@ -90,11 +107,9 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
                       onChange={(e) =>
                         handleChange(index, "role", e.target.value)
                       }
+                      className={`${styles.input} ${styles.inputfield}`}
                       required
-                      className={styles.input}
                     />
-                  </div>
-                  <div className={styles.row}>
                     <input
                       type="text"
                       placeholder="Duration"
@@ -102,21 +117,29 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
                       onChange={(e) =>
                         handleChange(index, "duration", e.target.value)
                       }
+                      className={`${styles.input} ${styles.inputfield}`}
                       required
-                      className={styles.input}
                     />
+                  </div>
+                  <div className={styles.row}>
                     <textarea
                       placeholder="Description"
                       value={activity.description}
                       onChange={(e) =>
                         handleChange(index, "description", e.target.value)
                       }
-                      required
                       className={styles.textarea}
+                      required
                     />
                   </div>
-                  {/* Add line break or margin between activities */}
-                  <hr />
+                  <button
+                    type="button"
+                    className={styles.removeButton}
+                    onClick={() => removeActivity(index)}
+                  >
+                    Remove
+                  </button>
+                  {index !== activities.length - 1 && <hr />}
                 </li>
               ))}
             </ul>
@@ -127,7 +150,6 @@ const ActivitiesParticipation = ({ navigateToNext }) => {
             >
               + Add More Activity
             </button>
-
             <button type="submit" className={styles.submitButton}>
               Submit
             </button>

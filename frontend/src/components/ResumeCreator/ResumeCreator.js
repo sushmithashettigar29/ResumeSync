@@ -168,29 +168,32 @@ const ResumeCreator = () => {
       addText(formData.summary || "N/A");
     }
 
-    // Education
-    if (formData.education && Object.keys(formData.education).length > 0) {
+    // Education Section
+    if (formData.education && formData.education.length > 0) {
       doc.setFont("times", "bold");
       addText("EDUCATION", 14, true);
-      const {
-        courseName = "N/A",
-        collegeOrSchoolName = "N/A",
-        startingYear = "N/A",
-        endingYear = "Currently Studying",
-        percentageOrCGPA = "N/A",
-        currentlyStudying = false,
-      } = formData.education;
 
-      const leftText = `${courseName} - ${collegeOrSchoolName}`;
-      const rightText = `${startingYear} - ${
-        currentlyStudying ? "Present" : endingYear
-      } | CGPA/Percentage: ${percentageOrCGPA}`;
+      formData.education.forEach((edu) => {
+        const {
+          courseName = "N/A",
+          collegeOrSchoolName = "N/A",
+          startingYear = "N/A",
+          endingYear = "N/A",
+          percentageOrCGPA = "N/A",
+          currentlyStudying = false,
+        } = edu;
 
-      doc.setFont("times", "normal");
-      doc.text(leftText, 10, yPosition);
-      doc.text(rightText, 200, yPosition, { align: "right" });
+        const leftText = `${courseName} - ${collegeOrSchoolName}`;
+        const rightText = `${startingYear} - ${
+          currentlyStudying ? "Present" : endingYear
+        } | CGPA/Percentage: ${percentageOrCGPA}`;
 
-      yPosition += lineHeight;
+        doc.setFont("times", "normal");
+        doc.text(leftText, 10, yPosition);
+        doc.text(rightText, 200, yPosition, { align: "right" });
+
+        yPosition += lineHeight; // Adjust vertical position for the next entry
+      });
     }
 
     // Skills
@@ -237,13 +240,15 @@ const ResumeCreator = () => {
     if (formData.internships && formData.internships.length > 0) {
       addText("INTERNSHIPS", 14); // Section header
       formData.internships.forEach((internship) => {
-        const formattedDate = `${formatDate(internship.startMonth)} - ${formatDate(internship.endMonth)}`;
+        const formattedDate = `${formatDate(
+          internship.startMonth
+        )} - ${formatDate(internship.endMonth)}`;
         const roleText = internship.role || "N/A";
-    
+
         // Left-aligned role, right-aligned date
         doc.text(roleText, 10, yPosition); // Role on the left
         doc.text(formattedDate, 200, yPosition, { align: "right" }); // Date on the right
-    
+
         // Description below
         yPosition += lineHeight;
         doc.text(internship.description || "N/A", 10, yPosition);
@@ -251,7 +256,7 @@ const ResumeCreator = () => {
         checkPageOverflow();
       });
     }
-    
+
     // Add Activities
     if (formData.activities && formData.activities.length > 0) {
       addText("ACTIVITIES", 14);

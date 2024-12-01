@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import HomePage from "./components/HomePage/HomePage";
-import NewResume from "./components/NewResume/NewResume";
 import EnchanceResume from "./components/EnchanceResume/EnchanceResume";
 import Profile from "./components/Profile/Profile";
 import About from "./components/About/About";
@@ -29,7 +28,6 @@ const App = () => {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/home" element={<HomePage />} />
-      <Route path="/new-resume" element={<NewResume />} />
       <Route path="/enhance-resume" element={<EnchanceResume />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/about" element={<About />} />
@@ -40,7 +38,10 @@ const App = () => {
       <Route path="/skills" element={<Skills />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/internship" element={<Internship />} />
-      <Route path="/activities-participation" element={<ActivitiesParticipation />} />
+      <Route
+        path="/activities-participation"
+        element={<ActivitiesParticipation />}
+      />
       <Route path="/project" element={<Project />} />
       <Route path="/hobbies" element={<Hobbies />} />
       <Route path="/new-resume-details" element={<NewResumeDetails />} />

@@ -1,23 +1,28 @@
 .container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f4f4f4;
-  border-radius: 8px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-}
-
-.formContainer {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
   padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff3a;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .courseContainer {
@@ -40,22 +45,33 @@ h3 {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%;
-  font-size: 1rem;
+  flex: 1;
 }
 
-/* .addButton {
-  background-color: #28a745;
+.addButton {
+  background-color: #00ff95;
   color: white;
-  padding: 10px 20px;
+  padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
 }
 
 .addButton:hover {
-  background-color: #218838;
+  background-color: #00d784;
+}
+
+.removeButton {
+  background-color: #ff4c4c;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  background-color: #ff7878;
 }
 
 .submitButton {
@@ -70,8 +86,4 @@ h3 {
 
 .submitButton:hover {
   background-color: #0056b3;
-} */
-
-hr {
-  border: 1px solid #ddd;
 }

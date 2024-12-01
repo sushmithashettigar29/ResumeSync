@@ -1,22 +1,24 @@
 .container {
+  color: #333;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+}
+.content {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-.content {
   width: 100%;
-  max-width: 500px;
+  max-width: 800px;
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: #ffffff3a;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.form-container {
+.formContainer {
   width: 100%;
 }
 
@@ -31,35 +33,11 @@
   flex-direction: column;
   gap: 5px;
 }
-
-.input,
-.textarea,
-.file-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .textarea {
-  resize: none;
+  height: 100px;
+  resize: vertical;
 }
-
 .file-upload-label {
   font-size: 14px;
   margin-bottom: 5px;
 }
-/* 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: white;
-  background-color: #007bff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  align-self: flex-start;
-}
-
-button:hover {
-  background-color: #0056b3;
-} */

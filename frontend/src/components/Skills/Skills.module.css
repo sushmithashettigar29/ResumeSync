@@ -1,18 +1,25 @@
 .container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f4f4f4;
-  border-radius: 8px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
 }
-
 .content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  padding:20px;
+  border-radius: 0px;
+  background-color: #ffffff3a;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-.formContainer {
-  padding: 20px;
+.form-container {
+  width: 100%;
+  padding: 30px;
 }
 
 .form {
@@ -45,18 +52,3 @@ h2 {
 .checkbox {
   margin-right: 10px;
 }
-
-/* .submitButton {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  align-self: flex-start;
-  margin-top: 20px;
-}
-
-.submitButton:hover {
-  background-color: #0056b3;
-} */
