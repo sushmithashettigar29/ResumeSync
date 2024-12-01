@@ -18,6 +18,10 @@
   background-color: #ffffff3a;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+.form-container {
+  width: 100%;
+  padding: 30px;
+}
 
 .form {
   display: flex;
@@ -42,9 +46,6 @@ h3 {
 }
 
 .input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   flex: 1;
 }
 
@@ -55,35 +56,10 @@ h3 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .addButton:hover {
   background-color: #00d784;
 }
 
-.removeButton {
-  background-color: #ff4c4c;
-  color: white;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.removeButton:hover {
-  background-color: #ff7878;
-}
-
-.submitButton {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-.submitButton:hover {
-  background-color: #0056b3;
-}
