@@ -33,15 +33,15 @@ const ResumeCreator = () => {
     const pageHeight = 280;
 
     // Helper function to add labeled text
-    const addLabeledText = (label, value) => {
-      doc.setFont("times", "bold");
-      doc.text(`${label}:`, 10, yPosition);
-      const labelWidth = doc.getTextWidth(`${label}:`);
-      doc.setFont("times", "normal");
-      doc.text(value || "N/A", 10 + labelWidth + 2, yPosition);
-      yPosition += lineHeight;
-      checkPageOverflow();
-    };
+    // const addLabeledText = (label, value) => {
+    //   doc.setFont("times", "bold");
+    //   doc.text(`${label}:`, 10, yPosition);
+    //   const labelWidth = doc.getTextWidth(`${label}:`);
+    //   doc.setFont("times", "normal");
+    //   doc.text(value || "N/A", 10 + labelWidth + 2, yPosition);
+    //   yPosition += lineHeight;
+    //   checkPageOverflow();
+    // };
 
     const addText = (text, fontSize = 12) => {
       doc.setFontSize(fontSize);
