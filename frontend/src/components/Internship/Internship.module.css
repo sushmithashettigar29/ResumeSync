@@ -49,7 +49,7 @@ h3 {
   height: 100px;
   resize: vertical;
 }
-
+/* 
 .addButton {
   background-color: #28a745;
   color: white;
@@ -76,7 +76,7 @@ h3 {
 
 .submitButton:hover {
   background-color: #0056b3;
-}
+} */
 
 hr {
   border: 1px solid #ddd;

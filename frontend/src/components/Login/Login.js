@@ -15,12 +15,10 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await login(formData.email, formData.password);
-  
-      // Store user details including profile photo in localStorage
       localStorage.setItem("username", response.data.user.name);
       localStorage.setItem("email", response.data.user.email);
-      localStorage.setItem("bio", response.data.user.bio || ""); // Default to blank bio
-      localStorage.setItem("profilePhoto", response.data.user.profilePhoto || ""); // Default to blank photo
+      localStorage.setItem("bio", response.data.user.bio || ""); 
+      localStorage.setItem("profilePhoto", response.data.user.profilePhoto || ""); 
       localStorage.setItem("token", response.data.token);
   
       alert("Login successful");
@@ -30,15 +28,12 @@ const Login = () => {
     }
   };
   
-
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginBox}>
-        <h1 className={styles.loginTitle}>Login</h1>
+        <h2 className={styles.welcome}>Welcome Back to ResumeSync!</h2>
+        <h2 className={styles.loginTitle}>Login Now</h2>
         <form onSubmit={handleSubmit} className={styles.loginForm}>
-          <label htmlFor="email" className={styles.label}>
-            Email
-          </label>
           <input
             type="email"
             id="email"
@@ -47,10 +42,8 @@ const Login = () => {
             onChange={handleChange}
             required
             className={styles.input}
+            placeholder="Enter email"
           />
-          <label htmlFor="password" className={styles.label}>
-            Password
-          </label>
           <input
             type="password"
             id="password"
@@ -59,6 +52,7 @@ const Login = () => {
             onChange={handleChange}
             required
             className={styles.input}
+            placeholder="Enter password"
           />
           <button type="submit" className={styles.button}>
             Login

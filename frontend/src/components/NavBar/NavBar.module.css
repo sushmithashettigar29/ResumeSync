@@ -1,13 +1,13 @@
 .navbar {
-  background-color: #1976d2;
-  color: white;
+  background-color: #347928;
+  color: #C0EBA6;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   height: 70px;
   padding: 0 50px;
-  line-height: 70px; /* Center content vertically */
+  line-height: 70px;
 }
 
 .navbarContainer {
@@ -35,12 +35,9 @@
   font-size: 1em;
   cursor: pointer;
   text-decoration: none;
-  color: white;
+  color: #C0EBA6;
+  font-weight:600;
   transition: color 0.3s ease;
-}
-
-.navbarLink:hover {
-  color: #cde4f6;
 }
 
 .navbarMenuIcon {
@@ -60,7 +57,7 @@
     position: absolute;
     top: 70px;
     right: 0;
-    background: #1976d2;
+    background: #347928;
     padding: 10px;
     width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

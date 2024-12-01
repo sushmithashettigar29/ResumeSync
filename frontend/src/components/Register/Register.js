@@ -18,67 +18,56 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await register(formData); // Call the register API
+      const response = await register(formData);
       console.log("Server response:", response);
       alert("Registration successful");
-      navigate("/"); // Navigate to login after successful registration
+      navigate("/");
     } catch (error) {
       console.error("Error during registration:", error);
       alert("Registration failed");
     }
   };
-  
 
   return (
-    <div className={styles["register-container"]}>
-      <div className={styles["register-box"]}>
-        <h1 className={styles["register-title"]}>Register</h1>
-        <form onSubmit={handleSubmit} className={styles["register-form"]}>
-          <div className={styles["form-field"]}>
-            <label htmlFor="name">Name</label>
+    <div className={styles.registerContainer}>
+      <div className={styles.registerBox}>
+        <h2 className={styles.welcome}>Welcome to Our ResumeSync!</h2>
+        <h1 className={styles.registerTitle}>Register</h1>
+        <form onSubmit={handleSubmit} className={styles.registerForm}>
             <input
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Enter name"
               required
             />
-          </div>
-          <div className={styles["form-field"]}>
-            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Enter email"
               required
             />
-          </div>
-          <div className={styles["form-field"]}>
-            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              placeholder="Enter password"
               required
             />
-          </div>
-          <button type="submit" className={styles["register-button"]}>
-            Register
-          </button>
+          <button type="submit">Register</button>
         </form>
-        <p className={styles["redirect-text"]}>
-          Already have an Account?{" "}
-          <span
-            className={styles["redirect-link"]}
-            onClick={() => navigate("/")}
-          >
-            Login
-          </span>
+        <p
+          className={styles.loginRedirect}
+          onClick={() => navigate("/")}
+        >
+          Already have an Account? <u>Login</u>
         </p>
       </div>
     </div>

@@ -55,7 +55,7 @@ h3 {
   resize: vertical;
 }
 
-.addButton {
+/* .addButton {
   background-color: #28a745;
   color: white;
   padding: 10px 20px;
@@ -81,7 +81,7 @@ h3 {
 
 .submitButton:hover {
   background-color: #0056b3;
-}
+} */
 
 hr {
   border: 1px solid #ddd;

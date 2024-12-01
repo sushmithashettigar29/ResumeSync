@@ -1,9 +1,32 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
 }
 input {
   height: 35px;
-  min-width: 300px;
-  border: 3px solid rgb(84, 255, 4);
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #dcabf5;
+  border-radius: 4px;
+  outline: none;
+  border-radius: 8px;
+  color: #ac07ff;
+  background-color: #fefff5;
+}
+
+button {
+  height: 56px;
+  font-size: 1rem;
+  background-color: #aa00ff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 20px;
+  line-height: 35px;
+  color: #fff;
+}
+button:hover{
+  background-color: #ae00ff6d;
 }

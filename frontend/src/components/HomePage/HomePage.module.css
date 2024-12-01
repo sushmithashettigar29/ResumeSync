@@ -30,7 +30,7 @@
   margin-bottom: 20px;
 }
 
-.buttonGroup {
+/* .buttonGroup {
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -63,4 +63,4 @@
 
 .secondaryButton:hover {
   background-color: #f0f0f0;
-}
+} */

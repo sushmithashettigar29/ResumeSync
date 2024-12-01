@@ -11,28 +11,25 @@ const PersonalInformation = ({ navigateToNext }) => {
     linkedIn: "",
     gitHub: "",
     Portfolio: "",
-    profileImage: null, // New field for image
+    profileImage: null,
   });
 
   const [errors, setErrors] = useState({});
-  const [imagePreview, setImagePreview] = useState(null); // To display the uploaded image
+  const [imagePreview, setImagePreview] = useState(null);
 
-  // Load saved data from localStorage on component mount
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("resumeData"));
     if (savedData && savedData.personalInformation) {
       setFormData(savedData.personalInformation);
-      setImagePreview(savedData.personalInformation.profileImage); // Load saved image preview
+      setImagePreview(savedData.personalInformation.profileImage);
     }
   }, []);
 
-  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedData = { ...formData, [name]: value };
     setFormData(updatedData);
 
-    // Save to localStorage temporarily for autosave functionality
     const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
     const updatedResumeData = {
       ...existingData,
@@ -41,17 +38,15 @@ const PersonalInformation = ({ navigateToNext }) => {
     localStorage.setItem("resumeData", JSON.stringify(updatedResumeData));
   };
 
-  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImagePreview(reader.result); // Set image preview
-        const updatedData = { ...formData, profileImage: reader.result }; // Save image data as Base64
+        setImagePreview(reader.result);
+        const updatedData = { ...formData, profileImage: reader.result }; 
         setFormData(updatedData);
 
-        // Save to localStorage
         const existingData = JSON.parse(localStorage.getItem("resumeData")) || {};
         const updatedResumeData = {
           ...existingData,
@@ -65,7 +60,6 @@ const PersonalInformation = ({ navigateToNext }) => {
     }
   };
 
-  // Validate fields
   const validate = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = "First name is required.";
@@ -242,15 +236,6 @@ const PersonalInformation = ({ navigateToNext }) => {
                 onChange={handleImageUpload}
                 className={styles.input}
               />
-              {imagePreview && (
-                <div className={styles.imagePreview}>
-                  <img
-                    src={imagePreview}
-                    alt="Profile Preview"
-                    className={styles.previewImage}
-                  />
-                </div>
-              )}
             </div>
             <button type="submit" className={styles["next-button"]}>
               Next
