@@ -13,8 +13,9 @@
 .sidebar {
   width: 200px;
   border-right: 1px solid #ccc;
-  background-color: #efcfff;
+  background-color: #fff;
   padding: 10px;
+  color: #AA00FF;
 }
 
 .sidebarItem {
@@ -26,10 +27,12 @@
 }
 
 .sidebarItem:hover {
-  background-color: #bf63ed;
+  color: #fff;
+  background-color: #d89ef6;
 }
 
 .sidebarItem.selected {
+  color: #fff;
   background-color: #AA00FF;
 }
 

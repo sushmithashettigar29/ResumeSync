@@ -164,7 +164,6 @@ const Education = ({ navigateToNext }) => {
                       {errors[index].endingYear}
                     </span>
                   )}
-                  
                 </div>
 
                 <div className={styles.row}>

@@ -1,6 +1,4 @@
-/* ResumeCreator.module.css
-
-.container {
+ResumeCreator.module.css .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +29,7 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .preview h1,
@@ -40,19 +39,3 @@
   font-weight: bold;
   text-transform: uppercase;
 }
-
-.downloadButton {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.downloadButton:hover {
-  background-color: #0056b3;
-} */

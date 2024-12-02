@@ -32,17 +32,6 @@ const ResumeCreator = () => {
     const lineHeight = 5;
     const pageHeight = 280;
 
-    // Helper function to add labeled text
-    // const addLabeledText = (label, value) => {
-    //   doc.setFont("times", "bold");
-    //   doc.text(`${label}:`, 10, yPosition);
-    //   const labelWidth = doc.getTextWidth(`${label}:`);
-    //   doc.setFont("times", "normal");
-    //   doc.text(value || "N/A", 10 + labelWidth + 2, yPosition);
-    //   yPosition += lineHeight;
-    //   checkPageOverflow();
-    // };
-
     const addText = (text, fontSize = 12) => {
       doc.setFontSize(fontSize);
       doc.text(text, 10, yPosition);
@@ -64,33 +53,7 @@ const ResumeCreator = () => {
       checkPageOverflow();
     };
 
-    // Add Personal Information
-    // if (formData.personalInformation) {
-    //   const {
-    //     firstName,
-    //     lastName,
-    //     email,
-    //     mobileNumber,
-    //     linkedIn,
-    //     gitHub,
-    //     address,
-    //   } = formData.personalInformation;
-
-    //   doc.setFont("times", "bold");
-    //   doc.setFontSize(16);
-    //   doc.text(`${firstName || "N/A"} ${lastName || ""}`, 10, yPosition);
-    //   yPosition += lineHeight;
-
-    //   doc.setFontSize(12);
-    //   addLabeledText("Email", email);
-    //   addLabeledText("Mobile", mobileNumber);
-    //   addLabeledText("LinkedIn", linkedIn);
-    //   addLabeledText("GitHub", gitHub);
-    //   addLabeledText("Address", address);
-    //   addDivider();
-    // }
-
-    // Add Personal Information with User Image on Right
+    // Add Header with Personal Information
     if (formData.personalInformation) {
       const {
         firstName,
@@ -100,19 +63,19 @@ const ResumeCreator = () => {
         linkedIn,
         gitHub,
         address,
-        profileImage, // New field for the profile image
+        profileImage,
       } = formData.personalInformation;
 
-      const textStartX = 10; // Start of text on the left
-      const textLineHeight = 5; // Line height for text
+      const textStartX = 10;
+      const textLineHeight = 5;
       const textFontSize = 12;
-      const imageWidth = 30; // Reduced width of the image
-      const imageHeight = 30; // Reduced height of the image
+      const imageWidth = 30;
+      const imageHeight = 30;
       const pageWidth = doc.internal.pageSize.width;
-      const imageX = pageWidth - imageWidth - 10; // Position the image to the right margin
-      const imageY = yPosition; // Align image vertically with the text
+      const imageX = pageWidth - imageWidth - 10;
+      const imageY = yPosition;
 
-      // Add Personal Information Text
+      // Name and Contact Details (Left)
       doc.setFont("times", "bold");
       doc.setFontSize(16);
       doc.text(
@@ -122,12 +85,16 @@ const ResumeCreator = () => {
       );
       yPosition += textLineHeight;
 
-      doc.setFont("times", "normal");
       doc.setFontSize(textFontSize);
 
-      // Helper function to add labeled text
       const addLabeledText = (label, value) => {
-        doc.text(`${label}: ${value || "N/A"}`, textStartX, yPosition);
+        doc.setFont("times", "bold");
+        const labelWidth = doc.getTextWidth(label + ": ");
+        doc.text(label + ": ", textStartX, yPosition); // Label in bold
+
+        doc.setFont("times", "normal");
+        doc.text(value || "N/A", textStartX + labelWidth, yPosition); // Value in normal font
+
         yPosition += textLineHeight;
       };
 
@@ -137,7 +104,7 @@ const ResumeCreator = () => {
       addLabeledText("GitHub", gitHub);
       addLabeledText("Address", address);
 
-      // Add Profile Image if available
+      // Add Profile Image (Right)
       if (profileImage) {
         try {
           doc.addImage(
@@ -153,140 +120,163 @@ const ResumeCreator = () => {
         }
       }
 
-      // Add some space after this section
       yPosition = Math.max(yPosition, imageY + imageHeight + 3);
-
-      // Add a divider line
       addDivider();
     }
 
-    // Add Summary
+    // Add Summary Section
     if (formData.summary) {
       doc.setFont("times", "bold");
       addText("SUMMARY", 14);
       doc.setFont("times", "normal");
       addText(formData.summary || "N/A");
+      yPosition += lineHeight;
     }
 
     // Education Section
-    if (formData.education && formData.education.length > 0) {
+    if (formData.educations && formData.educations.length > 0) {
       doc.setFont("times", "bold");
-      addText("EDUCATION", 14, true);
+      doc.setFontSize(14);
+      doc.text("Educations", 10, yPosition);
+      yPosition += 10;
 
-      formData.education.forEach((edu) => {
+      formData.educations.forEach((edu) => {
         const {
           courseName = "N/A",
           collegeOrSchoolName = "N/A",
           startingYear = "N/A",
           endingYear = "N/A",
           percentageOrCGPA = "N/A",
-          currentlyStudying = false,
         } = edu;
-
-        const leftText = `${courseName} - ${collegeOrSchoolName}`;
-        const rightText = `${startingYear} - ${
-          currentlyStudying ? "Present" : endingYear
-        } | CGPA/Percentage: ${percentageOrCGPA}`;
-
+        doc.setFontSize(12);
+        const leftX = 10;
+        const rightX = 190; 
+        doc.setFont("times", "bold");
+        doc.text(courseName, leftX, yPosition);
+        const yearText = `${startingYear} - ${endingYear}`;
+        doc.text(yearText, rightX, yPosition, { align: "right" }); 
+        yPosition += 10;
         doc.setFont("times", "normal");
-        doc.text(leftText, 10, yPosition);
-        doc.text(rightText, 200, yPosition, { align: "right" });
-
-        yPosition += lineHeight; // Adjust vertical position for the next entry
+        doc.text(collegeOrSchoolName, leftX, yPosition);
+        doc.text(`CGPA/Percentage: ${percentageOrCGPA}`, rightX, yPosition, {
+          align: "right",
+        }); 
+        yPosition += 5;
       });
     }
 
-    // Skills
+    // Skills Section
     if (formData.skills) {
       doc.setFont("times", "bold");
-      addText("SKILLS", 14, true);
+      addText("SKILLS", 14);
 
       Object.keys(formData.skills).forEach((category) => {
         if (formData.skills[category].length > 0) {
-          doc.setFont("times", "bold");
+          // Format category text in bold
           const categoryText = `${
             category.charAt(0).toUpperCase() + category.slice(1)
-          } :  `;
+          }: `;
 
+          doc.setFont("times", "bold");
+          const categoryTextWidth = doc.getTextWidth(categoryText);
           doc.text(categoryText, 10, yPosition);
 
+          // Format skills text in normal font
           doc.setFont("times", "normal");
           const skillsText = formData.skills[category].join(", ") || "N/A";
-          const categoryWidth = doc.getTextWidth(categoryText);
-          doc.text(skillsText, 10 + categoryWidth, yPosition);
+          doc.text(skillsText, 10 + categoryTextWidth, yPosition);
 
           yPosition += lineHeight;
-          checkPageOverflow();
         }
       });
+      yPosition += lineHeight + 1;
     }
 
-    // Add Courses
+    // Courses Section
     if (formData.courses && formData.courses.length > 0) {
+      doc.setFont("times", "bold");
       addText("COURSES", 14);
-      formData.courses.forEach((course, index) => {
-        const courseSentences = formData.courses.map((course) => {
-          return `${course.courseTitle || "N/A"} (${
-            course.duration || "N/A"
-          }) was offered by ${course.offeredBy || "N/A"} and completed in ${
+      formData.courses.forEach((course) => {
+        addText(`${course.courseTitle || "N/A"} (${course.duration || "N/A"})`);
+        addText(
+          `Offered by: ${course.offeredBy || "N/A"} | Completed in: ${
             course.completionYear || "N/A"
-          }`;
-        });
-        addText(courseSentences.join(". ") + ".");
+          }`
+        );
+        yPosition += lineHeight;
       });
     }
 
-    // Add Internships
+    // Internships Section
     if (formData.internships && formData.internships.length > 0) {
-      addText("INTERNSHIPS", 14); // Section header
+      doc.setFont("times", "bold");
+      addText("INTERNSHIPS", 14);
       formData.internships.forEach((internship) => {
         const formattedDate = `${formatDate(
           internship.startMonth
         )} - ${formatDate(internship.endMonth)}`;
         const roleText = internship.role || "N/A";
-
-        // Left-aligned role, right-aligned date
-        doc.text(roleText, 10, yPosition); // Role on the left
-        doc.text(formattedDate, 200, yPosition, { align: "right" }); // Date on the right
-
-        // Description below
+        doc.text(roleText, 10, yPosition);
+        doc.text(formattedDate, 200, yPosition, { align: "right" });
         yPosition += lineHeight;
         doc.text(internship.description || "N/A", 10, yPosition);
         yPosition += lineHeight;
-        checkPageOverflow();
       });
     }
 
-    // Add Activities
+    // Activities Section
     if (formData.activities && formData.activities.length > 0) {
+      doc.setFont("times", "bold");
       addText("ACTIVITIES", 14);
-      formData.activities.forEach((activity, index) => {
-        addText(`${activity.eventName || "N/A"}`);
-        addText(`- ${activity.role || "N/A"}`);
-        addText(`- ${activity.duration || "N/A"}`);
-        addText(`- ${activity.description || "N/A"}`);
-        addText("");
+      formData.activities.forEach((activity) => {
+        const {
+          eventName = "N/A",
+          role = "N/A",
+          duration = "N/A",
+          description = "N/A",
+        } = activity;
+        const activityText = `${eventName}: I served as ${role} for ${duration}. ${description}`;
+        doc.setFont("times", "normal");
+        doc.text(activityText, 10, yPosition);
+        yPosition += lineHeight + 2;
       });
     }
 
-    // Add Projects
+    // Projects Section
     if (formData.projects && formData.projects.length > 0) {
+      doc.setFont("times", "bold");
       addText("PROJECTS", 14);
       formData.projects.forEach((project, index) => {
-        addText(`${index + 1}. Title: ${project.title || "N/A"}`);
-        addText(`Start Month: ${project.startMonth || "N/A"}`);
-        addText(`End Month: ${project.endMonth || "N/A"}`);
-        addText(`Description: ${project.description || "N/A"}`);
-        addText("");
+        const {
+          title = "N/A",
+          startMonth = "N/A",
+          endMonth = "N/A",
+          description = "N/A",
+        } = project;
+        const pageWidth = doc.internal.pageSize.width;
+        const rightTextX = pageWidth - 10;
+        const monthsText = `${startMonth} - ${endMonth}`;
+        doc.setFont("times", "bold");
+        doc.text(`${index + 1}. ${title}`, 10, yPosition);
+        doc.setFont("times", "normal");
+        doc.text(monthsText, rightTextX, yPosition, { align: "right" });
+        yPosition += lineHeight;
+        doc.text(description, 10, yPosition);
+        yPosition += lineHeight + 5;
       });
     }
 
-    // Add Hobbies
+    // Hobbies Section
     if (formData.hobbies && formData.hobbies.length > 0) {
+      doc.setFont("times", "bold");
       addText("HOBBIES", 14);
-      formData.hobbies.forEach((hobby, index) => {
-        addText(`${index + 1}. ${hobby || "N/A"}`);
-      });
+      const hobbiesText = formData.hobbies
+        .filter((hobby) => hobby.trim() !== "")
+        .join(", ");
+      doc.setFont("times", "normal");
+      doc.text(hobbiesText, 10, yPosition);
+
+      yPosition += lineHeight + 2;
     }
 
     // Save the PDF
@@ -311,7 +301,6 @@ const ResumeCreator = () => {
                 <strong>Email:</strong>{" "}
                 {formData.personalInformation?.email || "N/A"}
               </p>
-              {/* Add more preview content here */}
             </div>
           ) : (
             <p>Loading data...</p>
@@ -326,3 +315,8 @@ const ResumeCreator = () => {
 };
 
 export default ResumeCreator;
+
+
+
+
+
